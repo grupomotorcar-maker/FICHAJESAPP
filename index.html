@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fichajes Motorcar</title>
+<style>
+:root {
+  --navy:#0f2044; --navy2:#1a3a6b; --orange:#f47920; --orange2:#ff9940;
+  --bg:#f0f2f5; --card:#fff; --text:#1a1a2e; --muted:#6b7280;
+  --border:#e5e7eb; --green:#10b981; --yellow:#f59e0b; --red:#ef4444; --blue:#3b82f6;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* HEADER */
+header{background:var(--navy);color:#fff;height:60px;padding:0 20px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25);}
+.logo{width:34px;height:34px;background:var(--orange);border-radius:8px;display:flex;
+  align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0;}
+.htitle{font-size:17px;font-weight:700;}.hsub{font-size:11px;color:rgba(255,255,255,.5);}
+.hleft{display:flex;align-items:center;gap:10px;}
+.hright{display:flex;align-items:center;gap:8px;}
+.ts{font-size:11px;color:rgba(255,255,255,.45);}
+.btn{padding:7px 13px;border-radius:7px;border:none;cursor:pointer;font-size:12px;font-weight:700;transition:.15s;}
+.btn-ghost{background:rgba(255,255,255,.1);color:#fff;}.btn-ghost:hover{background:rgba(255,255,255,.2);}
+.btn-ora{background:var(--orange);color:#fff;}.btn-ora:hover{background:var(--orange2);}
+.btn-sm{padding:5px 10px;font-size:11px;}
+
+/* MAIN */
+main{max-width:1400px;margin:0 auto;padding:18px 20px;}
+
+/* TABS */
+.tabs{display:flex;gap:3px;background:var(--card);border-radius:12px;padding:4px;
+  margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.07);}
+.tab{flex:1;padding:9px 14px;border:none;background:transparent;border-radius:8px;
+  cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);transition:.15s;}
+.tab.active{background:var(--navy);color:#fff;}
+.tab:hover:not(.active){background:var(--bg);color:var(--text);}
+.panel{display:none;}.panel.active{display:block;}
+
+/* STAT ROW */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.stat{background:var(--card);border-radius:12px;padding:16px 18px;
+  box-shadow:0 1px 4px rgba(0,0,0,.07);border-left:4px solid var(--border);}
+.stat.sg{border-left-color:var(--green);}.stat.sy{border-left-color:var(--yellow);}
+.stat.sr{border-left-color:var(--red);}.stat.sb{border-left-color:var(--blue);}
+.slbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:5px;}
+.sval{font-size:36px;font-weight:900;line-height:1;}
+.sg .sval{color:var(--green);}.sy .sval{color:var(--yellow);}
+.sr .sval{color:var(--red);}.sb .sval{color:var(--blue);}
+
+/* CARD */
+.card{background:var(--card);border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.07);overflow:hidden;}
+.chead{padding:13px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;}
+.ctitle{font-size:14px;font-weight:700;}
+
+/* FILTERS */
+.filters{display:flex;align-items:center;gap:9px;padding:11px 18px;
+  border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.filters label{font-size:11px;font-weight:700;color:var(--muted);}
+.filters select,.filters input[type=date]{
+  padding:6px 9px;border:1px solid var(--border);border-radius:7px;
+  font-size:12px;color:var(--text);background:#fff;font-family:inherit;}
+.filters select:focus,.filters input:focus{outline:none;border-color:var(--orange);}
+
+/* EMPLOYEE GRID */
+.egrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;padding:16px;}
+.ecard{border:1px solid var(--border);border-radius:10px;padding:14px;
+  position:relative;transition:box-shadow .15s;}
+.ecard:hover{box-shadow:0 4px 14px rgba(0,0,0,.1);}
+.ename{font-weight:700;font-size:15px;margin-bottom:2px;padding-right:56px;}
+.etarea{font-size:11px;color:var(--muted);margin-bottom:9px;padding-right:56px;}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;
+  border-radius:20px;font-size:11px;font-weight:700;margin-bottom:10px;}
+.badge::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor;}
+.bg{background:#d1fae5;color:#065f46;}.by{background:#fef3c7;color:#92400e;}
+.br{background:#fee2e2;color:#991b1b;}
+.ehours{font-size:21px;font-weight:900;color:var(--navy);}
+.emeta{font-size:11px;color:var(--muted);margin-top:2px;}
+.eprod{font-size:11px;margin-top:6px;}
+.eprod-bar{height:5px;border-radius:3px;background:var(--border);margin-top:3px;overflow:hidden;}
+.eprod-fill{height:100%;border-radius:3px;background:var(--green);transition:width .4s;}
+
+/* FLUJO TAG */
+.ftag{position:absolute;top:11px;right:11px;font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:5px;text-transform:uppercase;}
+.fjm{background:#dbeafe;color:#1e40af;}.frm{background:#ede9fe;color:#5b21b6;}
+.ffsr{background:#d1fae5;color:#065f46;}.fof{background:#f3f4f6;color:var(--muted);}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 14px;text-align:left;font-size:11px;text-transform:uppercase;
+  letter-spacing:.5px;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--border);}
+td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:#fafafa;}
+
+/* AREA BADGES */
+.abadge{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10px;font-weight:700;}
+.a-chapa{background:#dbeafe;color:#1e40af;}
+.a-pintura{background:#ede9fe;color:#5b21b6;}
+.a-mec{background:#d1fae5;color:#065f46;}
+.a-diag{background:#fef9c3;color:#854d0e;}
+.a-otras{background:#f3f4f6;color:var(--muted);}
+.a-entrada{background:#dcfce7;color:#166534;}
+.a-salida{background:#fee2e2;color:#991b1b;}
+.a-merienda{background:#fff7ed;color:#9a3412;}
+.a-limpieza{background:#f0fdf4;color:#166534;}
+
+/* BAR */
+.barw{display:flex;align-items:center;gap:6px;}
+.bar{height:7px;border-radius:4px;background:var(--orange);min-width:3px;}
+
+/* TALLERES GRID */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.tcard{background:var(--card);border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.07);}
+.thead2{padding:13px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;}
+.ttitle{font-size:16px;font-weight:700;}
+.tbody2{padding:18px;}
+.tbig{font-size:32px;font-weight:900;color:var(--navy);margin-bottom:4px;}
+.tmeta{font-size:12px;color:var(--muted);display:flex;gap:16px;margin-bottom:12px;}
+.tmeta strong{color:var(--text);}
+
+/* PROD RING — small bar */
+.prodrow{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:6px;}
+.prodbig{font-size:22px;font-weight:900;}
+.prodg{color:var(--green);}.prodb{color:var(--yellow);}
+
+/* AREA DIST */
+.adist{margin-top:10px;}
+.adist-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:11px;}
+.adist-label{width:90px;color:var(--muted);flex-shrink:0;}
+.adist-bar{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden;}
+.adist-fill{height:100%;border-radius:3px;}
+.adist-val{width:36px;text-align:right;color:var(--muted);}
+
+/* LOADING / EMPTY */
+.loading,.empty{text-align:center;padding:50px;color:var(--muted);}
+.spinner{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--orange);
+  border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.empty-icon{font-size:42px;margin-bottom:10px;}
+
+/* ANOMALY */
+.anomaly{color:var(--red);font-size:10px;font-weight:700;}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;
+  align-items:center;justify-content:center;z-index:999;}
+.overlay.hidden{display:none;}
+.modal{background:var(--card);border-radius:16px;padding:28px;width:92%;max-width:500px;
+  box-shadow:0 24px 60px rgba(0,0,0,.3);}
+.modal h2{font-size:18px;margin-bottom:5px;}
+.msub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 13px;
+  font-size:12px;color:#1e40af;margin-bottom:16px;line-height:1.6;}
+.tip a{color:#1e40af;font-weight:700;}
+.fg{margin-bottom:12px;}
+.fg label{display:block;font-size:11px;font-weight:700;margin-bottom:4px;}
+.fg input{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:7px;
+  font-size:13px;font-family:inherit;}
+.fg input:focus{outline:none;border-color:var(--orange);}
+.mfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
+.btn-can{background:var(--bg);color:var(--text);}.btn-can:hover{background:var(--border);}
+
+/* CSV */
+.csvbtn{display:inline-block;padding:5px 11px;border-radius:7px;font-size:11px;font-weight:700;
+  background:#ecfdf5;color:#065f46;cursor:pointer;border:1px solid #6ee7b7;}
+
+/* MOBILE */
+@media(max-width:768px){
+  main{padding:12px;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .tgrid{grid-template-columns:1fr;}
+  .tab{font-size:11px;padding:8px 8px;}
+  .hsub,.ts{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hleft">
+    <div class="logo">MC</div>
+    <div><div class="htitle">Fichajes Motorcar</div><div class="hsub">Panel de asistencia y productividad</div></div>
+  </div>
+  <div class="hright">
+    <span class="ts" id="tsLbl">—</span>
+    <button class="btn btn-ghost btn-sm" onclick="loadData()">🔄 Refrescar</button>
+    <button class="btn btn-ora btn-sm" onclick="openCfg()">⚙️</button>
+  </div>
+</header>
+
+<main>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('hoy',this)">📅 Hoy</button>
+    <button class="tab" onclick="switchTab('empleados',this)">👷 Empleados</button>
+    <button class="tab" onclick="switchTab('talleres',this)">🏭 Talleres</button>
+    <button class="tab" onclick="switchTab('historial',this)">📋 Historial</button>
+  </div>
+
+  <!-- HOY -->
+  <div id="p-hoy" class="panel active">
+    <div class="stats">
+      <div class="stat sg"><div class="slbl">Trabajando</div><div class="sval" id="n-t">—</div></div>
+      <div class="stat sy"><div class="slbl">En pausa</div><div class="sval" id="n-p">—</div></div>
+      <div class="stat sr"><div class="slbl">Han salido</div><div class="sval" id="n-s">—</div></div>
+      <div class="stat sb"><div class="slbl">Total hoy</div><div class="sval" id="n-tot">—</div></div>
+    </div>
+    <div class="card">
+      <div class="chead">
+        <span class="ctitle">Estado actual</span>
+        <select id="ft-flujo" onchange="renderHoy()">
+          <option value="">Todos los flujos</option>
+          <option value="JM">Mecánica JM</option>
+          <option value="RM">RM</option>
+          <option value="FSR">FSR</option>
+          <option value="OF">Oficina</option>
+        </select>
+      </div>
+      <div id="egrid" class="egrid"><div class="loading"><div class="spinner"></div>Cargando…</div></div>
+    </div>
+  </div>
+
+  <!-- EMPLEADOS -->
+  <div id="p-empleados" class="panel">
+    <div class="card">
+      <div class="filters">
+        <label>Desde</label><input type="date" id="e-d" onchange="renderEmpleados()">
+        <label>Hasta</label><input type="date" id="e-h" onchange="renderEmpleados()">
+        <label>Flujo</label>
+        <select id="e-f" onchange="renderEmpleados()">
+          <option value="">Todos</option><option value="JM">JM</option>
+          <option value="RM">RM</option><option value="FSR">FSR</option>
+        </select>
+      </div>
+      <div id="emp-wrap" style="overflow-x:auto"></div>
+    </div>
+  </div>
+
+  <!-- TALLERES -->
+  <div id="p-talleres" class="panel">
+    <div class="filters" style="background:var(--card);border-radius:12px;margin-bottom:14px;
+      box-shadow:0 1px 4px rgba(0,0,0,.07);border:none;">
+      <label>Desde</label><input type="date" id="t-d" onchange="renderTalleres()">
+      <label>Hasta</label><input type="date" id="t-h" onchange="renderTalleres()">
+    </div>
+    <div id="twrap" class="tgrid"></div>
+  </div>
+
+  <!-- HISTORIAL -->
+  <div id="p-historial" class="panel">
+    <div class="card">
+      <div class="filters">
+        <label>Fecha</label><input type="date" id="hf" onchange="renderHistorial()">
+        <label>Operario</label>
+        <select id="he" onchange="renderHistorial()"><option value="">Todos</option></select>
+        <label>Flujo</label>
+        <select id="hfl" onchange="renderHistorial()">
+          <option value="">Todos</option><option value="JM">JM</option>
+          <option value="RM">RM</option><option value="FSR">FSR</option><option value="OF">OF</option>
+        </select>
+        <label>Área</label>
+        <select id="ha" onchange="renderHistorial()">
+          <option value="">Todas</option>
+          <option value="ENTRADA TALLER">Entrada taller</option>
+          <option value="CHAPA">Chapa</option>
+          <option value="PINTURA">Pintura</option>
+          <option value="MECÁNICA LIGERA">Mecánica</option>
+          <option value="OTRAS TAREAS">Otras tareas</option>
+          <option value="MERIENDA">Merienda</option>
+        </select>
+        <span class="csvbtn" onclick="exportCSV()" style="margin-left:auto">⬇ CSV</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th>Fecha</th><th>Hora</th><th>Operario</th><th>Flujo</th>
+            <th>Área</th><th>Tarea</th><th>Matrícula</th><th>Duración</th>
+          </tr></thead>
+          <tbody id="hbody"><tr><td colspan="8" class="empty">Selecciona una fecha</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- CONFIG -->
+<div class="overlay hidden" id="cfg-ov">
+  <div class="modal">
+    <h2>⚙️ Configuración Google Sheets</h2>
+    <p class="msub">Conecta con el Sheets del bot de fichajes.</p>
+    <div class="tip">
+      📋 <strong>Pasos (5 min):</strong><br>
+      1. Abre tu hoja → <strong>Extensiones → Apps Script</strong><br>
+      2. Pega el contenido del archivo <code>fichajes_script.js</code> → Guardar<br>
+      3. <strong>Implementar → Nueva implementación → Aplicación web</strong><br>
+      4. Ejecutar como: <em>Yo</em> · Acceso: <em>Cualquier persona</em><br>
+      5. Copia la URL y pégala aquí abajo
+    </div>
+    <div class="fg">
+      <label>URL del Apps Script</label>
+      <input id="c-url" type="text" placeholder="https://script.google.com/macros/s/…/exec">
+    </div>
+    <div class="mfoot">
+      <button class="btn btn-can" onclick="closeCfg()">Cancelar</button>
+      <button class="btn btn-ora" onclick="saveCfg()">Guardar y conectar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ CONFIG ══════════════════════════════════════════
+const DEF = {
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbwy_HauVq6yvStovsjWRtNYtPvWIpUcrVG5QnHcWdJGKVTTz7mqzua9hc6UXHu28_c/exec'
+};
+let cfg = {...DEF};
+let rows = [];      // all parsed rows
+let operarios = []; // unique operario names
+
+// Column indices (0-based) — confirmed from sheet structure
+const C = {
+  fecha:0, dia:1, operario:2, telegramId:3, matricula:4,
+  area:5, tarea:6, horaEntrada:7, horaSalida:8,
+  duracion:9, verificado:10, distancia:11, flujo:12
+};
+
+// Área classification
+const PROD_AREAS   = ['CHAPA','PINTURA','MECÁNICA LIGERA','MECÁNICA','DIAGNOSIS'];
+const NONPROD_AREAS= ['OTRAS TAREAS','LIMPIEZA GENERAL','LIMPIEZA COCHES','RECADOS'];
+const TASK_AREAS   = [...PROD_AREAS, ...NONPROD_AREAS];
+
+function loadCfg(){
+  try{const s=localStorage.getItem('mc_f_cfg'); if(s) cfg={...DEF,...JSON.parse(s)};}catch(e){}
+}
+function saveCfg(){
+  cfg={ scriptUrl: document.getElementById('c-url').value.trim() };
+  localStorage.setItem('mc_f_cfg',JSON.stringify(cfg));
+  closeCfg(); loadData();
+}
+function openCfg(){
+  document.getElementById('c-url').value=cfg.scriptUrl||'';
+  document.getElementById('cfg-ov').classList.remove('hidden');
+}
+function closeCfg(){document.getElementById('cfg-ov').classList.add('hidden');}
+document.getElementById('cfg-ov').addEventListener('click',e=>{if(e.target===e.currentTarget)closeCfg();});
+
+// ══ DATA LOADING ════════════════════════════════════
+async function loadData(){
+  if(!cfg.scriptUrl){openCfg();return;}
+  document.getElementById('egrid').innerHTML='<div class="loading"><div class="spinner"></div>Conectando…</div>';
+  try{
+    const res=await fetch(cfg.scriptUrl);
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();
+    if(!data.ok) throw new Error(data.error||'Error en el script');
+    const raw=data.rows||[];
+
+    rows=raw.map(r=>({
+      fecha:     (r[C.fecha]||'').trim(),
+      dia:       (r[C.dia]||'').trim(),
+      operario:  (r[C.operario]||'').trim(),
+      telegramId:(r[C.telegramId]||'').trim(),
+      matricula: (r[C.matricula]||'').trim(),
+      area:      (r[C.area]||'').trim().toUpperCase(),
+      tarea:     (r[C.tarea]||'').trim(),
+      horaEntrada:(r[C.horaEntrada]||'').trim(),
+      horaSalida: (r[C.horaSalida]||'').trim(),
+      duracion:   parseDur(r[C.duracion]),
+      flujo:      (r[C.flujo]||'').trim().toUpperCase(),
+    })).filter(r=>r.operario&&r.fecha);
+
+    operarios=[...new Set(rows.map(r=>r.operario))].sort();
+    const sel=document.getElementById('he');
+    sel.innerHTML='<option value="">Todos</option>'+operarios.map(n=>`<option>${n}</option>`).join('');
+
+    document.getElementById('tsLbl').textContent='Act. '+new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+    renderActive();
+  }catch(err){
+    document.getElementById('egrid').innerHTML=
+      `<div class="loading">❌ <strong>${err.message}</strong><br><br>
+       <button class="btn btn-ora" onclick="openCfg()">Configurar conexión</button></div>`;
+  }
+}
+
+// ══ HELPERS ════════════════════════════════════════
+function parseDur(v){
+  const n=parseInt(v);
+  return isNaN(n)?null:n;
+}
+function parseDate(s){
+  if(!s)return null;
+  let m;
+  if((m=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/)))
+    return new Date(+m[3],+m[2]-1,+m[1]);
+  if((m=s.match(/^(\d{4})[\/\-](\d{2})[\/\-](\d{2})$/)))
+    return new Date(+m[1],+m[2]-1,+m[3]);
+  const d=new Date(s); return isNaN(d)?null:d;
+}
+function sameDay(s,d2){
+  const d1=parseDate(s); if(!d1||!d2)return false;
+  return d1.toDateString()===d2.toDateString();
+}
+function inRange(s,from,to){
+  const d=parseDate(s); if(!d)return false;
+  if(from&&d<new Date(from))return false;
+  if(to){const t=new Date(to);t.setDate(t.getDate()+1);if(d>=t)return false;}
+  return true;
+}
+function parseTime(s){
+  if(!s)return null;
+  const p=s.split(':');
+  const h=parseInt(p[0]),m=parseInt(p[1]);
+  return(isNaN(h)||isNaN(m))?null:h*60+m;
+}
+function fmtMin(m){
+  if(m==null||isNaN(m)||m<0)return '—';
+  return `${Math.floor(m/60)}h ${String(m%60).padStart(2,'0')}m`;
+}
+function flujoTag(f){
+  if(f==='JM')return'fjm'; if(f==='RM')return'frm';
+  if(f==='FSR')return'ffsr'; return'fof';
+}
+function areaClass(a){
+  if(a==='CHAPA')return'a-chapa';
+  if(a==='PINTURA')return'a-pintura';
+  if(a==='MECÁNICA LIGERA'||a==='MECÁNICA')return'a-mec';
+  if(a==='DIAGNOSIS')return'a-diag';
+  if(a==='ENTRADA TALLER')return'a-entrada';
+  if(a==='SALIDA TALLER')return'a-salida';
+  if(a==='MERIENDA')return'a-merienda';
+  if(a==='LIMPIEZA GENERAL'||a==='LIMPIEZA COCHES')return'a-limpieza';
+  return'a-otras';
+}
+function areaColor(a){
+  if(a==='CHAPA')return'#3b82f6';
+  if(a==='PINTURA')return'#8b5cf6';
+  if(a==='MECÁNICA LIGERA'||a==='MECÁNICA')return'#10b981';
+  if(a==='DIAGNOSIS')return'#f59e0b';
+  if(a==='LIMPIEZA GENERAL'||a==='LIMPIEZA COCHES')return'#6ee7b7';
+  return'#d1d5db';
+}
+function isMeriendaAnomala(r){
+  return r.area==='MERIENDA' && r.duracion!==null && r.duracion>60;
+}
+
+// ══ STATUS HOY ════════════════════════════════════
+function getStatusHoy(empRows){
+  // Sort all rows by hora (entry or exit)
+  const sorted=[...empRows].sort((a,b)=>{
+    const ta=parseTime(a.horaEntrada||a.horaSalida)||0;
+    const tb=parseTime(b.horaEntrada||b.horaSalida)||0;
+    return ta-tb;
+  });
+  const last=sorted[sorted.length-1];
+  if(!last)return{status:'sin-datos',label:'Sin datos',bc:'br'};
+  const a=last.area;
+  if(a==='SALIDA TALLER')return{status:'salido',label:'Ha salido',bc:'br'};
+  if(a==='MERIENDA'&&!isMeriendaAnomala(last))return{status:'pausa',label:'En pausa',bc:'by'};
+  // Last task area
+  const lastTask=sorted.filter(r=>TASK_AREAS.includes(r.area)).slice(-1)[0];
+  const tareaActual=lastTask?`${lastTask.area}${lastTask.matricula&&lastTask.matricula!=='—'&&lastTask.matricula!=='PAUSA'?` · ${lastTask.matricula}`:''}${lastTask.tarea?` — ${lastTask.tarea}`:''}`:'';
+  return{status:'trabajando',label:'Trabajando',bc:'bg',tareaActual};
+}
+
+// Horas hoy: prefer DURACION from ENTRADA TALLER (bot-calculated, most reliable)
+function getHorasHoy(empRows){
+  const entradas=empRows.filter(r=>
+    r.area==='ENTRADA TALLER'&&r.duracion!==null&&r.duracion>0&&r.duracion<720
+  );
+  if(entradas.length>0)return Math.max(...entradas.map(e=>e.duracion));
+  // Fallback: time from first ENTRADA TALLER to now
+  const primera=empRows.filter(r=>r.area==='ENTRADA TALLER'&&r.horaEntrada)
+    .sort((a,b)=>(parseTime(a.horaEntrada)||0)-(parseTime(b.horaEntrada)||0))[0];
+  if(primera){
+    const now=new Date(); const n=now.getHours()*60+now.getMinutes();
+    const e=parseTime(primera.horaEntrada)||0;
+    return Math.max(0,n-e);
+  }
+  return null;
+}
+
+// Productividad: sum of task durations (excl ENTRADA/SALIDA/MERIENDA)
+function calcProd(empRows){
+  const tasks=empRows.filter(r=>
+    TASK_AREAS.includes(r.area)&&r.duracion!==null&&r.duracion>0&&r.duracion<480
+  );
+  const totalMins=tasks.reduce((s,r)=>s+r.duracion,0);
+  const prodMins=tasks.filter(r=>PROD_AREAS.includes(r.area)).reduce((s,r)=>s+r.duracion,0);
+  return{total:totalMins,prod:prodMins,ratio:totalMins>0?Math.round(prodMins/totalMins*100):0};
+}
+
+// Area distribution (minutes per area)
+function calcAreaDist(empRows){
+  const dist={};
+  empRows.filter(r=>TASK_AREAS.includes(r.area)&&r.duracion>0&&r.duracion<480).forEach(r=>{
+    dist[r.area]=(dist[r.area]||0)+r.duracion;
+  });
+  return dist;
+}
+
+// ══ RENDER ════════════════════════════════════════
+function switchTab(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('p-'+id).classList.add('active');
+  if(rows.length)renderTab(id);
+}
+function renderActive(){
+  const a=document.querySelector('.panel.active');
+  if(a)renderTab(a.id.replace('p-',''));
+}
+function renderTab(id){
+  if(id==='hoy')renderHoy();
+  else if(id==='empleados')renderEmpleados();
+  else if(id==='talleres')renderTalleres();
+  else if(id==='historial')renderHistorial();
+}
+
+// ── HOY ──
+function renderHoy(){
+  const ft=document.getElementById('ft-flujo').value;
+  const today=new Date();
+  const todayRows=rows.filter(r=>sameDay(r.fecha,today));
+
+  // Group by operario
+  const byEmp={};
+  todayRows.forEach(r=>{
+    if(ft&&r.flujo!==ft)return;
+    if(!byEmp[r.operario])byEmp[r.operario]={nombre:r.operario,flujo:r.flujo,rows:[]};
+    byEmp[r.operario].rows.push(r);
+  });
+
+  const emps=Object.values(byEmp).map(e=>{
+    const st=getStatusHoy(e.rows);
+    const horas=getHorasHoy(e.rows);
+    const prod=calcProd(e.rows);
+    const entrada=e.rows.filter(r=>r.area==='ENTRADA TALLER'&&r.horaEntrada)
+      .sort((a,b)=>(parseTime(a.horaEntrada)||0)-(parseTime(b.horaEntrada)||0))[0]?.horaEntrada||'—';
+    return{...e,...st,horas,prod,entrada};
+  });
+
+  const trab=emps.filter(e=>e.status==='trabajando').length;
+  const paus=emps.filter(e=>e.status==='pausa').length;
+  const sal =emps.filter(e=>e.status==='salido').length;
+  document.getElementById('n-t').textContent=trab;
+  document.getElementById('n-p').textContent=paus;
+  document.getElementById('n-s').textContent=sal;
+  document.getElementById('n-tot').textContent=emps.length;
+
+  if(!emps.length){
+    document.getElementById('egrid').innerHTML='<div class="empty"><div class="empty-icon">🏖️</div>Sin fichajes hoy</div>';
+    return;
+  }
+  const order={trabajando:0,pausa:1,salido:2,'sin-datos':3};
+  emps.sort((a,b)=>(order[a.status]||0)-(order[b.status]||0));
+
+  document.getElementById('egrid').innerHTML=emps.map(e=>`
+    <div class="ecard">
+      <span class="ftag ${flujoTag(e.flujo)}">${e.flujo||'—'}</span>
+      <div class="ename">${e.nombre}</div>
+      <div class="etarea">${e.tareaActual||'—'}</div>
+      <span class="badge ${e.bc}">${e.label}</span>
+      <div class="ehours">${fmtMin(e.horas)}</div>
+      <div class="emeta">Entrada: ${e.entrada}</div>
+      ${e.prod.total>0?`
+      <div class="eprod">
+        <span style="color:var(--muted)">Productividad: </span>
+        <strong style="color:${e.prod.ratio>=70?'var(--green)':e.prod.ratio>=50?'var(--yellow)':'var(--red)'}">${e.prod.ratio}%</strong>
+        <div class="eprod-bar"><div class="eprod-fill" style="width:${e.prod.ratio}%"></div></div>
+      </div>`:''}
+    </div>`).join('');
+}
+
+// ── EMPLEADOS ──
+function renderEmpleados(){
+  const desde=document.getElementById('e-d').value;
+  const hasta=document.getElementById('e-h').value;
+  const flujo=document.getElementById('e-f').value;
+
+  const filtered=rows.filter(r=>
+    inRange(r.fecha,desde,hasta)&&(!flujo||r.flujo===flujo)
+  );
+
+  if(!filtered.length){
+    document.getElementById('emp-wrap').innerHTML='<div class="empty"><div class="empty-icon">📅</div>Sin datos en el período</div>';
+    return;
+  }
+
+  // Group by operario + date to get daily hours
+  const byEmp={};
+  filtered.forEach(r=>{
+    if(!byEmp[r.operario])byEmp[r.operario]={nombre:r.operario,flujo:r.flujo,byDate:{}};
+    if(!byEmp[r.operario].byDate[r.fecha])byEmp[r.operario].byDate[r.fecha]=[];
+    byEmp[r.operario].byDate[r.fecha].push(r);
+  });
+
+  const stats=Object.values(byEmp).map(e=>{
+    let totalHoras=0, dias=0;
+    Object.values(e.byDate).forEach(dr=>{
+      const h=getHorasHoy(dr);
+      if(h&&h>0){totalHoras+=h;dias++;}
+    });
+    const allRows=Object.values(e.byDate).flat();
+    const prod=calcProd(allRows);
+    const dist=calcAreaDist(allRows);
+    const topArea=Object.entries(dist).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
+    return{nombre:e.nombre,flujo:e.flujo,totalHoras,dias,prod,topArea,
+      media:dias>0?Math.round(totalHoras/dias):0};
+  }).sort((a,b)=>b.totalHoras-a.totalHoras);
+
+  const maxH=Math.max(...stats.map(s=>s.totalHoras),1);
+
+  document.getElementById('emp-wrap').innerHTML=`
+    <table>
+      <thead><tr>
+        <th>Operario</th><th>Flujo</th><th>Días</th>
+        <th>Horas totales</th><th>Media/día</th>
+        <th>Productividad</th><th>Área principal</th><th>Distribución</th>
+      </tr></thead>
+      <tbody>${stats.map(s=>`<tr>
+        <td><strong>${s.nombre}</strong></td>
+        <td><span class="ftag ${flujoTag(s.flujo)}" style="position:static;display:inline-block">${s.flujo||'—'}</span></td>
+        <td>${s.dias}</td>
+        <td><strong>${fmtMin(s.totalHoras)}</strong></td>
+        <td>${fmtMin(s.media)}</td>
+        <td>
+          <span style="font-weight:700;color:${s.prod.ratio>=70?'var(--green)':s.prod.ratio>=50?'var(--yellow)':'var(--red)'}">
+            ${s.prod.total>0?s.prod.ratio+'%':'—'}
+          </span>
+        </td>
+        <td><span class="abadge ${areaClass(s.topArea)}">${s.topArea}</span></td>
+        <td><div class="barw"><div class="bar" style="width:${Math.round(s.totalHoras/maxH*140)}px"></div></div></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+}
+
+// ── TALLERES ──
+function renderTalleres(){
+  const desde=document.getElementById('t-d').value;
+  const hasta=document.getElementById('t-h').value;
+  const filtered=rows.filter(r=>inRange(r.fecha,desde,hasta)&&r.flujo!=='OF');
+
+  if(!filtered.length){
+    document.getElementById('twrap').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🏭</div>Sin datos</div>';
+    return;
+  }
+
+  const byFlujo={};
+  filtered.forEach(r=>{
+    const k=r.flujo||'?';
+    if(!byFlujo[k])byFlujo[k]={flujo:k,ops:new Set(),byEmpDate:{},allRows:[]};
+    byFlujo[k].ops.add(r.operario);
+    byFlujo[k].allRows.push(r);
+    const dk=r.operario+'|'+r.fecha;
+    if(!byFlujo[k].byEmpDate[dk])byFlujo[k].byEmpDate[dk]=[];
+    byFlujo[k].byEmpDate[dk].push(r);
+  });
+
+  const cards=Object.values(byFlujo).map(t=>{
+    let totalH=0;
+    Object.values(t.byEmpDate).forEach(dr=>{const h=getHorasHoy(dr);if(h&&h>0)totalH+=h;});
+    const prod=calcProd(t.allRows);
+    const dist=calcAreaDist(t.allRows);
+    const dias=new Set(t.allRows.map(r=>r.fecha)).size;
+    const topAreas=Object.entries(dist).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const maxDist=topAreas[0]?.[1]||1;
+    return{flujo:t.flujo,ops:t.ops.size,totalH,prod,dias,topAreas,maxDist};
+  }).sort((a,b)=>b.totalH-a.totalH);
+
+  const maxH=Math.max(...cards.map(c=>c.totalH),1);
+
+  document.getElementById('twrap').innerHTML=cards.map(c=>`
+    <div class="tcard">
+      <div class="thead2">
+        <span class="ttitle">${c.flujo==='JM'?'Mecánica JM':c.flujo==='RM'?'Mecánica RM':c.flujo}</span>
+        <span class="ftag ${flujoTag(c.flujo)}" style="position:static;display:inline-block">${c.ops} operarios</span>
+      </div>
+      <div class="tbody2">
+        <div class="tbig">${fmtMin(c.totalH)}</div>
+        <div class="tmeta">
+          <span><strong>${c.dias}</strong> días activos</span>
+          <span><strong>${c.ops}</strong> operarios</span>
+        </div>
+        <div class="prodrow">
+          <span style="color:var(--muted)">Productividad</span>
+          <span class="prodbig ${c.prod.ratio>=70?'prodg':'prodb'}">${c.prod.total>0?c.prod.ratio+'%':'—'}</span>
+        </div>
+        <div class="barw" style="margin-bottom:12px">
+          <div class="bar" style="width:${Math.round(c.totalH/maxH*100)}%;height:10px;border-radius:5px;"></div>
+          <span style="font-size:11px;color:var(--muted)">${Math.round(c.totalH/maxH*100)}%</span>
+        </div>
+        ${c.topAreas.length?`<div class="adist">${c.topAreas.map(([a,v])=>`
+          <div class="adist-row">
+            <span class="adist-label">${a}</span>
+            <div class="adist-bar"><div class="adist-fill" style="width:${Math.round(v/c.maxDist*100)}%;background:${areaColor(a)}"></div></div>
+            <span class="adist-val">${fmtMin(v)}</span>
+          </div>`).join('')}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// ── HISTORIAL ──
+let histData=[];
+function renderHistorial(){
+  const fecha=document.getElementById('hf').value;
+  const emp=document.getElementById('he').value;
+  const flujo=document.getElementById('hfl').value;
+  const area=document.getElementById('ha').value;
+
+  histData=rows.filter(r=>{
+    if(fecha){const td=new Date(fecha+'T00:00:00');if(!sameDay(r.fecha,td))return false;}
+    if(emp&&r.operario!==emp)return false;
+    if(flujo&&r.flujo!==flujo)return false;
+    if(area&&r.area!==area)return false;
+    return true;
+  }).sort((a,b)=>{
+    const da=parseDate(a.fecha),db=parseDate(b.fecha);
+    if(da&&db&&da.getTime()!==db.getTime())return db.getTime()-da.getTime();
+    const ta=parseTime(a.horaEntrada||a.horaSalida)||0;
+    const tb=parseTime(b.horaEntrada||b.horaSalida)||0;
+    return tb-ta;
+  });
+
+  document.getElementById('hbody').innerHTML=histData.length===0
+    ?`<tr><td colspan="8" class="empty">Sin registros</td></tr>`
+    :histData.map(r=>`<tr>
+        <td>${r.fecha}</td>
+        <td>${r.horaEntrada||r.horaSalida||'—'}</td>
+        <td><strong>${r.operario}</strong></td>
+        <td><span class="ftag ${flujoTag(r.flujo)}" style="position:static;display:inline-block">${r.flujo}</span></td>
+        <td><span class="abadge ${areaClass(r.area)}">${r.area}</span>
+          ${isMeriendaAnomala(r)?`<span class="anomaly">⚠️ anomalía</span>`:''}
+        </td>
+        <td>${r.tarea||'—'}</td>
+        <td>${r.matricula&&r.matricula!=='—'&&r.matricula!=='PAUSA'?r.matricula:'—'}</td>
+        <td>${r.duracion!==null?fmtMin(r.duracion):'—'}</td>
+      </tr>`).join('');
+}
+
+function exportCSV(){
+  if(!histData.length)return;
+  const h='Fecha,Operario,Flujo,Área,Tarea,Matrícula,Duración(min),Hora Entrada,Hora Salida';
+  const b=histData.map(r=>[r.fecha,r.operario,r.flujo,r.area,r.tarea,r.matricula,
+    r.duracion??'',r.horaEntrada,r.horaSalida]
+    .map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`).join(','));
+  const blob=new Blob([[h,...b].join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`fichajes_${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+}
+
+// ══ INIT ════════════════════════════════════════════
+function init(){
+  loadCfg();
+  const today=new Date().toISOString().split('T')[0];
+  const m30=new Date(); m30.setDate(m30.getDate()-30);
+  const m30s=m30.toISOString().split('T')[0];
+  document.getElementById('e-d').value=m30s;
+  document.getElementById('e-h').value=today;
+  document.getElementById('t-d').value=m30s;
+  document.getElementById('t-h').value=today;
+  document.getElementById('hf').value=today;
+  if(cfg.scriptUrl)loadData(); else openCfg();
+}
+init();
+</script>
+</body>
+</html>
