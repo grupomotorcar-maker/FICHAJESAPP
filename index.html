@@ -198,6 +198,14 @@ tbody tr:hover td{background:#fafafa;}
 .csvbtn{display:inline-block;padding:5px 11px;border-radius:7px;font-size:11px;font-weight:700;
   background:#ecfdf5;color:#065f46;cursor:pointer;border:1px solid #6ee7b7;}
 
+/* BACK BAR */
+.backbar{display:flex;align-items:center;margin-bottom:14px;}
+.backbtn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;
+  border:none;border-radius:9px;background:var(--card);color:var(--navy);
+  font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08);transition:.15s;}
+.backbtn:hover{background:var(--navy);color:#fff;}
+.backbtn::before{content:'←';font-size:16px;}
+
 /* TELEGRAM / AVISOS */
 .dbtn{padding:8px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;
   font-size:12px;font-weight:700;background:var(--bg);color:var(--muted);transition:.15s;}
@@ -255,7 +263,7 @@ tbody tr:hover td{background:#fafafa;}
     <button class="tab" onclick="switchTab('empleados',this)">👷 Empleados</button>
     <button class="tab" onclick="switchTab('talleres',this)">🏭 Talleres</button>
     <button class="tab" onclick="switchTab('historial',this)">📋 Historial</button>
-    <button class="tab" onclick="switchTab('avisos',this)">📲 Avisos</button>
+    <button class="tab" onclick="switchTab('avisos',this)">📲 Fichar</button>
   </div>
 
   <!-- HOY / VISTA -->
@@ -305,6 +313,7 @@ tbody tr:hover td{background:#fafafa;}
 
   <!-- EMPLEADOS -->
   <div id="p-empleados" class="panel">
+    <div class="backbar"><button class="backbtn" onclick="goBack()">Inicio</button></div>
     <div class="card">
       <div class="filters">
         <label>Desde</label><input type="date" id="e-d" onchange="renderEmpleados()">
@@ -323,6 +332,7 @@ tbody tr:hover td{background:#fafafa;}
 
   <!-- TALLERES -->
   <div id="p-talleres" class="panel">
+    <div class="backbar"><button class="backbtn" onclick="goBack()">Inicio</button></div>
     <div class="filters" style="background:var(--card);border-radius:12px;margin-bottom:14px;
       box-shadow:0 1px 4px rgba(0,0,0,.07);border:none;">
       <label>Desde</label><input type="date" id="t-d" onchange="renderTalleres()">
@@ -333,6 +343,7 @@ tbody tr:hover td{background:#fafafa;}
 
   <!-- HISTORIAL -->
   <div id="p-historial" class="panel">
+    <div class="backbar"><button class="backbtn" onclick="goBack()">Inicio</button></div>
     <div class="card">
       <div class="filters">
         <label>Fecha</label><input type="date" id="hf" onchange="renderHistorial()">
@@ -370,69 +381,29 @@ tbody tr:hover td{background:#fafafa;}
     </div>
   </div>
 
-  <!-- AVISOS TELEGRAM -->
+  <!-- FICHAR -->
   <div id="p-avisos" class="panel">
+    <div class="backbar"><button class="backbtn" onclick="goBack()">Inicio</button></div>
 
-    <!-- Banner si no hay token configurado -->
-    <div id="tg-nocfg" class="card" style="display:none;padding:22px;margin-bottom:14px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <span style="font-size:32px">🤖</span>
-        <div>
-          <div style="font-weight:700;margin-bottom:4px">Bot de Telegram no configurado</div>
-          <div style="font-size:12px;color:var(--muted)">Introduce el token y los chat IDs en ⚙️ Configuración para activar los avisos.</div>
-        </div>
-        <button class="btn btn-ora btn-sm" style="margin-left:auto;flex-shrink:0" onclick="openCfg()">⚙️ Configurar</button>
+    <div class="card" style="padding:40px 24px;text-align:center;">
+      <div style="font-size:56px;margin-bottom:16px;">🤖</div>
+      <div style="font-size:22px;font-weight:900;color:var(--navy);margin-bottom:8px;">ENZO Motorcar</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:32px;">Bot de fichajes del taller</div>
+      <a href="https://t.me/ENZOMotorcarBOT" target="_blank"
+        style="display:inline-flex;align-items:center;gap:10px;padding:16px 36px;
+        background:#229ED9;color:#fff;border-radius:14px;font-size:17px;font-weight:800;
+        text-decoration:none;box-shadow:0 4px 16px rgba(34,158,217,.4);transition:.15s;"
+        onmouseenter="this.style.background='#1a8bbf'"
+        onmouseleave="this.style.background='#229ED9'">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.34 13.847l-2.948-.924c-.64-.203-.652-.64.135-.953l11.566-4.461c.537-.194 1.006.131.8.712z"/>
+        </svg>
+        Abrir en Telegram
+      </a>
+      <div style="margin-top:24px;font-size:12px;color:var(--muted);">
+        Abre el bot directamente para fichar entrada, salida o tareas
       </div>
     </div>
-
-    <!-- Destinatario -->
-    <div class="card" style="margin-bottom:14px;">
-      <div class="chead"><span class="ctitle">📬 Destinatario</span></div>
-      <div style="padding:16px;display:flex;gap:8px;flex-wrap:wrap;" id="tg-dest-btns">
-        <button class="dbtn active" data-dest="group" onclick="setDest(this)">👥 Grupo general</button>
-        <button class="dbtn" data-dest="JM" onclick="setDest(this)">🔵 Joan Motorcar</button>
-        <button class="dbtn" data-dest="RM" onclick="setDest(this)">🟣 Raúl Motorcar</button>
-        <button class="dbtn" data-dest="FSR" onclick="setDest(this)">🟢 FSR</button>
-      </div>
-      <div style="padding:0 16px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <span style="font-size:12px;color:var(--muted)">O directamente a:</span>
-        <select id="tg-op-sel" style="padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:12px;font-family:inherit;">
-          <option value="">— Operario —</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Acciones rápidas -->
-    <div class="card" style="margin-bottom:14px;">
-      <div class="chead"><span class="ctitle">⚡ Acciones rápidas</span></div>
-      <div style="padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;" id="tg-quick-grid">
-        <button class="qbtn" onclick="sendQuick('🚗 Coche listo para entrega')">🚗 Coche listo</button>
-        <button class="qbtn" onclick="sendQuick('📞 Llamada de cliente pendiente')">📞 Llamada cliente</button>
-        <button class="qbtn" onclick="sendQuick('🛠️ Material necesario — revisar almacén')">🛠️ Falta material</button>
-        <button class="qbtn" onclick="sendQuick('⏰ Hora de comer — ¡a comer!')">⏰ Hora de comer</button>
-        <button class="qbtn" onclick="sendQuick('✅ Tarea completada')">✅ Tarea completada</button>
-        <button class="qbtn" onclick="sendQuick('⚠️ Incidencia en taller — atención')">⚠️ Incidencia</button>
-        <button class="qbtn" onclick="sendQuick('📋 Reunión en 5 minutos')">📋 Reunión</button>
-        <button class="qbtn" onclick="sendQuick('🔑 Llaves en recepción')">🔑 Llaves recepción</button>
-      </div>
-    </div>
-
-    <!-- Mensaje libre -->
-    <div class="card">
-      <div class="chead"><span class="ctitle">✏️ Mensaje libre</span></div>
-      <div style="padding:16px;">
-        <textarea id="tg-msg" placeholder="Escribe un mensaje personalizado…"
-          style="width:100%;height:90px;border:1px solid var(--border);border-radius:8px;padding:10px;
-          font-size:13px;font-family:inherit;resize:vertical;"></textarea>
-        <div style="display:flex;align-items:center;gap:10px;margin-top:10px;">
-          <button class="btn btn-ora" onclick="sendFree()" id="tg-send-btn">📤 Enviar</button>
-          <span id="tg-status" style="font-size:12px;color:var(--muted)"></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Historial de envíos -->
-    <div style="margin-top:14px;" id="tg-log-wrap"></div>
   </div>
 </main>
 
@@ -1208,6 +1179,10 @@ async function sendFree(){
 }
 
 // ══ TABS ═════════════════════════════════════════════
+function goBack(){
+  const hoyTab=document.querySelector('.tab');
+  switchTab('hoy', hoyTab);
+}
 function switchTab(id,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
