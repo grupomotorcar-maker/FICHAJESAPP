@@ -715,13 +715,27 @@ function getStatusHoy(empRows){
   });
   if(!sorted.length)return{status:'sin-datos',label:'Sin datos',bc:'br'};
 
-  // Si hay SALIDA TALLER en cualquier registro → ha salido (independiente del orden)
-  const salida=sorted.filter(r=>r.area==='SALIDA TALLER')
+  // 1. Fila explícita de salida
+  const salida=sorted.filter(r=>r.area.includes('SALIDA'))
     .sort((a,b)=>(parseTime(a.horaEntrada||a.horaSalida)||0)-(parseTime(b.horaEntrada||b.horaSalida)||0))
     .slice(-1)[0];
   if(salida){
     const horaSal=salida.horaEntrada||salida.horaSalida||'';
-    return{status:'salido',label:'Salió a las '+horaSal,bc:'br',horaSalida:horaSal};
+    return{status:'salido',label:horaSal?'Salió a las '+horaSal:'Ha salido',bc:'br'};
+  }
+  // 2. ENTRADA con horaSalida rellena (bot actualiza la fila)
+  const entConSal=sorted.filter(r=>r.area.includes('ENTRADA')&&r.horaSalida).slice(-1)[0];
+  if(entConSal){
+    return{status:'salido',label:'Salió a las '+entConSal.horaSalida,bc:'br'};
+  }
+  // 3. ENZO pone duración en la fila de ENTRADA cuando se despide → calcular hora salida
+  const entConDur=sorted.filter(r=>r.area.includes('ENTRADA')&&r.duracion>30).slice(-1)[0];
+  if(entConDur){
+    const entMin=parseTime(entConDur.horaEntrada)||0;
+    const salMin=entMin+entConDur.duracion;
+    const hh=String(Math.floor(salMin/60)).padStart(2,'0');
+    const mm=String(salMin%60).padStart(2,'0');
+    return{status:'salido',label:`Salió ~${hh}:${mm}`,bc:'br'};
   }
 
   const last=sorted[sorted.length-1];
