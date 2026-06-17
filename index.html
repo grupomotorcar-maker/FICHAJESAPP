@@ -720,22 +720,21 @@ function getStatusHoy(empRows){
     .sort((a,b)=>(parseTime(a.horaEntrada||a.horaSalida)||0)-(parseTime(b.horaEntrada||b.horaSalida)||0))
     .slice(-1)[0];
   if(salida){
-    const horaSal=salida.horaEntrada||salida.horaSalida||'';
-    return{status:'salido',label:horaSal?'Salió a las '+horaSal:'Ha salido',bc:'br'};
+    const h=salida.horaEntrada||salida.horaSalida||'';
+    return{status:'salido',label:'Ha salido',bc:'br',horaSalida:h};
   }
-  // 2. ENTRADA con horaSalida rellena (bot actualiza la fila)
+  // 2. ENTRADA con horaSalida rellena
   const entConSal=sorted.filter(r=>r.area.includes('ENTRADA')&&r.horaSalida).slice(-1)[0];
   if(entConSal){
-    return{status:'salido',label:'Salió a las '+entConSal.horaSalida,bc:'br'};
+    return{status:'salido',label:'Ha salido',bc:'br',horaSalida:entConSal.horaSalida};
   }
-  // 3. ENZO pone duración en la fila de ENTRADA cuando se despide → calcular hora salida
+  // 3. ENZO rellena duración al despedirse → calcular hora salida
   const entConDur=sorted.filter(r=>r.area.includes('ENTRADA')&&r.duracion>30).slice(-1)[0];
   if(entConDur){
-    const entMin=parseTime(entConDur.horaEntrada)||0;
-    const salMin=entMin+entConDur.duracion;
+    const salMin=(parseTime(entConDur.horaEntrada)||0)+entConDur.duracion;
     const hh=String(Math.floor(salMin/60)).padStart(2,'0');
     const mm=String(salMin%60).padStart(2,'0');
-    return{status:'salido',label:`Salió ~${hh}:${mm}`,bc:'br'};
+    return{status:'salido',label:'Ha salido',bc:'br',horaSalida:`${hh}:${mm}`};
   }
 
   const last=sorted[sorted.length-1];
@@ -831,7 +830,7 @@ function renderDia(){
       <div class="etarea">${e.tareaActual||'—'}</div>
       <span class="badge ${e.bc}">${e.label}</span>
       <div class="ehours">${fmtMin(e.horas)}</div>
-      <div class="emeta">Entrada: ${e.entrada}</div>
+      <div class="emeta">Entrada: ${e.entrada}${e.horaSalida?' · Salida: <strong style="color:var(--red)">'+e.horaSalida+'</strong>':''}</div>
       ${e.prod.total>0?`
       <div class="eprod">
         <span style="color:var(--muted)">Productividad: </span>
