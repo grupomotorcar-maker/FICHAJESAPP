@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Fichajes Motorcar</title>
 <style>
 :root {
@@ -39,16 +42,42 @@ main{max-width:1400px;margin:0 auto;padding:18px 20px;}
 .tab:hover:not(.active){background:var(--bg);color:var(--text);}
 .panel{display:none;}.panel.active{display:block;}
 
+/* PERIOD SELECTOR */
+.period-sel{display:flex;gap:4px;margin-bottom:14px;flex-wrap:wrap;}
+.pbtn{padding:7px 16px;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;
+  background:var(--card);color:var(--muted);box-shadow:0 1px 3px rgba(0,0,0,.07);transition:.15s;}
+.pbtn.active{background:var(--navy);color:#fff;}
+.pbtn:hover:not(.active){background:var(--border);}
+
+/* GLOBAL FILTER BAR */
+.gfilt{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.gfilt select{padding:6px 10px;border:1px solid var(--border);border-radius:7px;
+  font-size:12px;color:var(--text);background:#fff;font-family:inherit;}
+.gfilt select:focus{outline:none;border-color:var(--orange);}
+.vbtn{padding:5px 11px;border-radius:6px;border:1px solid var(--border);
+  background:var(--bg);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:.15s;}
+.vbtn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
 /* STAT ROW */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
 .stat{background:var(--card);border-radius:12px;padding:16px 18px;
   box-shadow:0 1px 4px rgba(0,0,0,.07);border-left:4px solid var(--border);}
 .stat.sg{border-left-color:var(--green);}.stat.sy{border-left-color:var(--yellow);}
 .stat.sr{border-left-color:var(--red);}.stat.sb{border-left-color:var(--blue);}
+.stat.sp{border-left-color:var(--orange);}
 .slbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:5px;}
 .sval{font-size:36px;font-weight:900;line-height:1;}
+.ssub{font-size:11px;color:var(--muted);margin-top:4px;}
 .sg .sval{color:var(--green);}.sy .sval{color:var(--yellow);}
 .sr .sval{color:var(--red);}.sb .sval{color:var(--blue);}
+.sp .sval{color:var(--orange);}
+
+/* KPI BADGE */
+.kbadge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;
+  border-radius:5px;font-size:10px;font-weight:700;margin-top:4px;}
+.kb-g{background:#d1fae5;color:#065f46;}
+.kb-y{background:#fef3c7;color:#92400e;}
+.kb-r{background:#fee2e2;color:#991b1b;}
 
 /* CARD */
 .card{background:var(--card);border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.07);overflow:hidden;}
@@ -157,7 +186,6 @@ tbody tr:hover td{background:#fafafa;}
 .msub{font-size:12px;color:var(--muted);margin-bottom:16px;}
 .tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 13px;
   font-size:12px;color:#1e40af;margin-bottom:16px;line-height:1.6;}
-.tip a{color:#1e40af;font-weight:700;}
 .fg{margin-bottom:12px;}
 .fg label{display:block;font-size:11px;font-weight:700;margin-bottom:4px;}
 .fg input{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:7px;
@@ -170,6 +198,27 @@ tbody tr:hover td{background:#fafafa;}
 .csvbtn{display:inline-block;padding:5px 11px;border-radius:7px;font-size:11px;font-weight:700;
   background:#ecfdf5;color:#065f46;cursor:pointer;border:1px solid #6ee7b7;}
 
+/* TELEGRAM / AVISOS */
+.dbtn{padding:8px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;
+  font-size:12px;font-weight:700;background:var(--bg);color:var(--muted);transition:.15s;}
+.dbtn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.dbtn:hover:not(.active){background:var(--border);}
+.qbtn{padding:13px 10px;border:1px solid var(--border);border-radius:10px;cursor:pointer;
+  font-size:13px;font-weight:700;background:var(--bg);color:var(--text);
+  transition:.15s;text-align:center;line-height:1.4;}
+.qbtn:hover{background:var(--orange);color:#fff;border-color:var(--orange);}
+.qbtn:active{transform:scale(.97);}
+.tg-log{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.07);}
+.tg-log-title{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--muted);}
+.tg-entry{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.tg-entry:last-child{border-bottom:none;}
+.tg-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.tg-txt{flex:1;}
+.tg-dest-tag{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;}
+.tg-msg-txt{margin-top:2px;color:var(--text);}
+.tg-time{font-size:10px;color:var(--muted);margin-top:2px;}
+.tg-ok{color:var(--green);}.tg-err{color:var(--red);}
+
 /* MOBILE */
 @media(max-width:768px){
   main{padding:12px;}
@@ -177,6 +226,12 @@ tbody tr:hover td{background:#fafafa;}
   .tgrid{grid-template-columns:1fr;}
   .tab{font-size:11px;padding:8px 8px;}
   .hsub,.ts{display:none;}
+  .egrid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .egrid{grid-template-columns:1fr;}
+  .period-sel{gap:3px;}
+  .pbtn{padding:6px 10px;font-size:11px;}
 }
 </style>
 </head>
@@ -200,26 +255,49 @@ tbody tr:hover td{background:#fafafa;}
     <button class="tab" onclick="switchTab('empleados',this)">👷 Empleados</button>
     <button class="tab" onclick="switchTab('talleres',this)">🏭 Talleres</button>
     <button class="tab" onclick="switchTab('historial',this)">📋 Historial</button>
+    <button class="tab" onclick="switchTab('avisos',this)">📲 Avisos</button>
   </div>
 
-  <!-- HOY -->
+  <!-- HOY / VISTA -->
   <div id="p-hoy" class="panel active">
-    <div class="stats">
+
+    <!-- Selector de período -->
+    <div class="period-sel">
+      <button class="pbtn active" onclick="setPeriod('hoy',this)">📅 Hoy</button>
+      <button class="pbtn" onclick="setPeriod('semana',this)">📆 Semana</button>
+      <button class="pbtn" onclick="setPeriod('mes',this)">🗓️ Mes</button>
+      <button class="pbtn" onclick="setPeriod('año',this)">📊 Año</button>
+    </div>
+
+    <!-- Filtros globales -->
+    <div class="gfilt">
+      <select id="ft-operario" onchange="renderVista()">
+        <option value="">👷 Todos los operarios</option>
+      </select>
+      <select id="ft-taller" onchange="renderVista()">
+        <option value="">🏭 Todos los talleres</option>
+        <option value="JM">Joan Motorcar</option>
+        <option value="RM">Raúl Motorcar</option>
+        <option value="FSR">FSR</option>
+        <option value="OF">Oficina</option>
+      </select>
+      <div id="view-toggle" style="display:none;margin-left:auto;gap:4px;align-items:center">
+        <button class="vbtn active" id="vm-cards" onclick="setViewMode('cards')">⊞ Tarjetas</button>
+        <button class="vbtn" id="vm-table" onclick="setViewMode('table')">≡ Tabla</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats" id="vstats">
       <div class="stat sg"><div class="slbl">Trabajando</div><div class="sval" id="n-t">—</div></div>
       <div class="stat sy"><div class="slbl">En pausa</div><div class="sval" id="n-p">—</div></div>
       <div class="stat sr"><div class="slbl">Han salido</div><div class="sval" id="n-s">—</div></div>
       <div class="stat sb"><div class="slbl">Total hoy</div><div class="sval" id="n-tot">—</div></div>
     </div>
+
     <div class="card">
       <div class="chead">
-        <span class="ctitle">Estado actual</span>
-        <select id="ft-flujo" onchange="renderHoy()">
-          <option value="">Todos los flujos</option>
-          <option value="JM">Mecánica JM</option>
-          <option value="RM">RM</option>
-          <option value="FSR">FSR</option>
-          <option value="OF">Oficina</option>
-        </select>
+        <span class="ctitle" id="vista-title">Estado actual</span>
       </div>
       <div id="egrid" class="egrid"><div class="loading"><div class="spinner"></div>Cargando…</div></div>
     </div>
@@ -233,8 +311,10 @@ tbody tr:hover td{background:#fafafa;}
         <label>Hasta</label><input type="date" id="e-h" onchange="renderEmpleados()">
         <label>Flujo</label>
         <select id="e-f" onchange="renderEmpleados()">
-          <option value="">Todos</option><option value="JM">JM</option>
-          <option value="RM">RM</option><option value="FSR">FSR</option>
+          <option value="">Todos</option>
+          <option value="JM">Joan Motorcar</option>
+          <option value="RM">Raúl Motorcar</option>
+          <option value="FSR">FSR</option>
         </select>
       </div>
       <div id="emp-wrap" style="overflow-x:auto"></div>
@@ -260,8 +340,11 @@ tbody tr:hover td{background:#fafafa;}
         <select id="he" onchange="renderHistorial()"><option value="">Todos</option></select>
         <label>Flujo</label>
         <select id="hfl" onchange="renderHistorial()">
-          <option value="">Todos</option><option value="JM">JM</option>
-          <option value="RM">RM</option><option value="FSR">FSR</option><option value="OF">OF</option>
+          <option value="">Todos</option>
+          <option value="JM">Joan Motorcar</option>
+          <option value="RM">Raúl Motorcar</option>
+          <option value="FSR">FSR</option>
+          <option value="OF">OF</option>
         </select>
         <label>Área</label>
         <select id="ha" onchange="renderHistorial()">
@@ -278,7 +361,7 @@ tbody tr:hover td{background:#fafafa;}
       <div style="overflow-x:auto">
         <table>
           <thead><tr>
-            <th>Fecha</th><th>Hora</th><th>Operario</th><th>Flujo</th>
+            <th>Fecha</th><th>Hora</th><th>Operario</th><th>Taller</th>
             <th>Área</th><th>Tarea</th><th>Matrícula</th><th>Duración</th>
           </tr></thead>
           <tbody id="hbody"><tr><td colspan="8" class="empty">Selecciona una fecha</td></tr></tbody>
@@ -286,25 +369,115 @@ tbody tr:hover td{background:#fafafa;}
       </div>
     </div>
   </div>
+
+  <!-- AVISOS TELEGRAM -->
+  <div id="p-avisos" class="panel">
+
+    <!-- Banner si no hay token configurado -->
+    <div id="tg-nocfg" class="card" style="display:none;padding:22px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:32px">🤖</span>
+        <div>
+          <div style="font-weight:700;margin-bottom:4px">Bot de Telegram no configurado</div>
+          <div style="font-size:12px;color:var(--muted)">Introduce el token y los chat IDs en ⚙️ Configuración para activar los avisos.</div>
+        </div>
+        <button class="btn btn-ora btn-sm" style="margin-left:auto;flex-shrink:0" onclick="openCfg()">⚙️ Configurar</button>
+      </div>
+    </div>
+
+    <!-- Destinatario -->
+    <div class="card" style="margin-bottom:14px;">
+      <div class="chead"><span class="ctitle">📬 Destinatario</span></div>
+      <div style="padding:16px;display:flex;gap:8px;flex-wrap:wrap;" id="tg-dest-btns">
+        <button class="dbtn active" data-dest="group" onclick="setDest(this)">👥 Grupo general</button>
+        <button class="dbtn" data-dest="JM" onclick="setDest(this)">🔵 Joan Motorcar</button>
+        <button class="dbtn" data-dest="RM" onclick="setDest(this)">🟣 Raúl Motorcar</button>
+        <button class="dbtn" data-dest="FSR" onclick="setDest(this)">🟢 FSR</button>
+      </div>
+      <div style="padding:0 16px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:12px;color:var(--muted)">O directamente a:</span>
+        <select id="tg-op-sel" style="padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:12px;font-family:inherit;">
+          <option value="">— Operario —</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Acciones rápidas -->
+    <div class="card" style="margin-bottom:14px;">
+      <div class="chead"><span class="ctitle">⚡ Acciones rápidas</span></div>
+      <div style="padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;" id="tg-quick-grid">
+        <button class="qbtn" onclick="sendQuick('🚗 Coche listo para entrega')">🚗 Coche listo</button>
+        <button class="qbtn" onclick="sendQuick('📞 Llamada de cliente pendiente')">📞 Llamada cliente</button>
+        <button class="qbtn" onclick="sendQuick('🛠️ Material necesario — revisar almacén')">🛠️ Falta material</button>
+        <button class="qbtn" onclick="sendQuick('⏰ Hora de comer — ¡a comer!')">⏰ Hora de comer</button>
+        <button class="qbtn" onclick="sendQuick('✅ Tarea completada')">✅ Tarea completada</button>
+        <button class="qbtn" onclick="sendQuick('⚠️ Incidencia en taller — atención')">⚠️ Incidencia</button>
+        <button class="qbtn" onclick="sendQuick('📋 Reunión en 5 minutos')">📋 Reunión</button>
+        <button class="qbtn" onclick="sendQuick('🔑 Llaves en recepción')">🔑 Llaves recepción</button>
+      </div>
+    </div>
+
+    <!-- Mensaje libre -->
+    <div class="card">
+      <div class="chead"><span class="ctitle">✏️ Mensaje libre</span></div>
+      <div style="padding:16px;">
+        <textarea id="tg-msg" placeholder="Escribe un mensaje personalizado…"
+          style="width:100%;height:90px;border:1px solid var(--border);border-radius:8px;padding:10px;
+          font-size:13px;font-family:inherit;resize:vertical;"></textarea>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+          <button class="btn btn-ora" onclick="sendFree()" id="tg-send-btn">📤 Enviar</button>
+          <span id="tg-status" style="font-size:12px;color:var(--muted)"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Historial de envíos -->
+    <div style="margin-top:14px;" id="tg-log-wrap"></div>
+  </div>
 </main>
 
 <!-- CONFIG -->
 <div class="overlay hidden" id="cfg-ov">
-  <div class="modal">
-    <h2>⚙️ Configuración Google Sheets</h2>
-    <p class="msub">Conecta con el Sheets del bot de fichajes.</p>
-    <div class="tip">
-      📋 <strong>Pasos (5 min):</strong><br>
-      1. Abre tu hoja → <strong>Extensiones → Apps Script</strong><br>
-      2. Pega el contenido del archivo <code>fichajes_script.js</code> → Guardar<br>
-      3. <strong>Implementar → Nueva implementación → Aplicación web</strong><br>
-      4. Ejecutar como: <em>Yo</em> · Acceso: <em>Cualquier persona</em><br>
-      5. Copia la URL y pégala aquí abajo
-    </div>
+  <div class="modal" style="max-width:520px;max-height:90vh;overflow-y:auto;">
+    <h2>⚙️ Configuración</h2>
+    <p class="msub">Conexión con Google Sheets y bot de Telegram.</p>
+
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;
+      color:var(--muted);margin-bottom:8px;">📊 Google Sheets</div>
     <div class="fg">
       <label>URL del Apps Script</label>
       <input id="c-url" type="text" placeholder="https://script.google.com/macros/s/…/exec">
     </div>
+
+    <div style="border-top:1px solid var(--border);margin:16px 0;"></div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;
+      color:var(--muted);margin-bottom:8px;">📲 Bot de Telegram</div>
+    <div class="tip" style="margin-bottom:12px;">
+      ①  Crea un bot con <strong>@BotFather</strong> → te dará el token.<br>
+      ②  Añade el bot al grupo / chat y envía un mensaje.<br>
+      ③  Obtén el chat_id en: <code style="background:#dbeafe;padding:1px 4px;border-radius:3px;">api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code>
+    </div>
+    <div class="fg">
+      <label>Token del bot</label>
+      <input id="c-tg-token" type="text" placeholder="1234567890:AAFxxxxxxxxxxxxxxxxxx">
+    </div>
+    <div class="fg">
+      <label>Chat ID — Grupo general</label>
+      <input id="c-tg-group" type="text" placeholder="-1001234567890">
+    </div>
+    <div class="fg">
+      <label>Chat ID — Joan Motorcar</label>
+      <input id="c-tg-jm" type="text" placeholder="-1001234567891">
+    </div>
+    <div class="fg">
+      <label>Chat ID — Raúl Motorcar</label>
+      <input id="c-tg-rm" type="text" placeholder="-1001234567892">
+    </div>
+    <div class="fg">
+      <label>Chat ID — FSR</label>
+      <input id="c-tg-fsr" type="text" placeholder="-1001234567893">
+    </div>
+
     <div class="mfoot">
       <button class="btn btn-can" onclick="closeCfg()">Cancelar</button>
       <button class="btn btn-ora" onclick="saveCfg()">Guardar y conectar</button>
@@ -315,56 +488,99 @@ tbody tr:hover td{background:#fafafa;}
 <script>
 // ══ CONFIG ══════════════════════════════════════════
 const DEF = {
-  scriptUrl: 'https://script.google.com/macros/s/AKfycbwy_HauVq6yvStovsjWRtNYtPvWIpUcrVG5QnHcWdJGKVTTz7mqzua9hc6UXHu28_c/exec'
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbyhwIxlBUIkBqkIixDcXuQ6KBwj78g1rDd7VBkWkfd2G9PbihiQ6HbFdyk_0bmFgYA/exec',
+  tgToken:'', tgGroup:'', tgJM:'', tgRM:'', tgFSR:''
 };
 let cfg = {...DEF};
-let rows = [];      // all parsed rows
-let operarios = []; // unique operario names
+let rows = [];
+let operarios = [];
+let currentPeriod = 'hoy';
+let viewMode = 'cards';
+let tgDest = 'group';   // destinatario actual avisos
+let tgLog  = [];        // historial de envíos
 
-// Column indices (0-based) — confirmed from sheet structure
 const C = {
   fecha:0, dia:1, operario:2, telegramId:3, matricula:4,
   area:5, tarea:6, horaEntrada:7, horaSalida:8,
   duracion:9, verificado:10, distancia:11, flujo:12
 };
 
-// Área classification
-const PROD_AREAS   = ['CHAPA','PINTURA','MECÁNICA LIGERA','MECÁNICA','DIAGNOSIS'];
-const NONPROD_AREAS= ['OTRAS TAREAS','LIMPIEZA GENERAL','LIMPIEZA COCHES','RECADOS'];
-const TASK_AREAS   = [...PROD_AREAS, ...NONPROD_AREAS];
+const PROD_AREAS    = ['CHAPA','PINTURA','MECÁNICA LIGERA','MECÁNICA','DIAGNOSIS'];
+const NONPROD_AREAS = ['OTRAS TAREAS','LIMPIEZA GENERAL','LIMPIEZA COCHES','RECADOS'];
+const TASK_AREAS    = [...PROD_AREAS, ...NONPROD_AREAS];
 
+// ══ FLUJO NAMES ═════════════════════════════════════
+function flujoName(f){
+  if(f==='JM') return 'Joan Motorcar';
+  if(f==='RM') return 'Raúl Motorcar';
+  if(f==='FSR') return 'FSR';
+  if(f==='OF') return 'Oficina';
+  return f||'—';
+}
+
+// ══ CFG ═════════════════════════════════════════════
 function loadCfg(){
   try{const s=localStorage.getItem('mc_f_cfg'); if(s) cfg={...DEF,...JSON.parse(s)};}catch(e){}
+  try{const t=localStorage.getItem('mc_tg_log'); if(t) tgLog=JSON.parse(t);}catch(e){}
 }
 function saveCfg(){
-  cfg={ scriptUrl: document.getElementById('c-url').value.trim() };
+  cfg={
+    scriptUrl: document.getElementById('c-url').value.trim(),
+    tgToken:   document.getElementById('c-tg-token').value.trim(),
+    tgGroup:   document.getElementById('c-tg-group').value.trim(),
+    tgJM:      document.getElementById('c-tg-jm').value.trim(),
+    tgRM:      document.getElementById('c-tg-rm').value.trim(),
+    tgFSR:     document.getElementById('c-tg-fsr').value.trim(),
+  };
   localStorage.setItem('mc_f_cfg',JSON.stringify(cfg));
   closeCfg(); loadData();
 }
 function openCfg(){
-  document.getElementById('c-url').value=cfg.scriptUrl||'';
+  document.getElementById('c-url').value        = cfg.scriptUrl||'';
+  document.getElementById('c-tg-token').value   = cfg.tgToken||'';
+  document.getElementById('c-tg-group').value   = cfg.tgGroup||'';
+  document.getElementById('c-tg-jm').value      = cfg.tgJM||'';
+  document.getElementById('c-tg-rm').value      = cfg.tgRM||'';
+  document.getElementById('c-tg-fsr').value     = cfg.tgFSR||'';
   document.getElementById('cfg-ov').classList.remove('hidden');
 }
 function closeCfg(){document.getElementById('cfg-ov').classList.add('hidden');}
 document.getElementById('cfg-ov').addEventListener('click',e=>{if(e.target===e.currentTarget)closeCfg();});
 
-// ══ DATA LOADING ════════════════════════════════════
+// ══ JSONP ════════════════════════════════════════════
+function jsonpFetch(url,timeout=25000){
+  return new Promise((resolve,reject)=>{
+    const cb='_mc'+Date.now();
+    const s=document.createElement('script');
+    const t=setTimeout(()=>{
+      cleanup();
+      reject(new Error('Timeout — GAS tardó más de 25s. Pulsa Refrescar.'));
+    },timeout);
+    function cleanup(){clearTimeout(t);delete window[cb];s.parentNode&&s.parentNode.removeChild(s);}
+    window[cb]=d=>{cleanup();resolve(d);};
+    s.onerror=()=>{cleanup();reject(new Error('Error de red o URL incorrecta'));};
+    s.src=url+(url.includes('?')?'&':'?')+'callback='+cb;
+    document.head.appendChild(s);
+  });
+}
+
+// ══ DATA LOADING ═════════════════════════════════════
 async function loadData(){
   if(!cfg.scriptUrl){openCfg();return;}
   document.getElementById('egrid').innerHTML='<div class="loading"><div class="spinner"></div>Conectando…</div>';
   try{
-    const data=await jsonpFetch(cfg.scriptUrl);
+    const data=await jsonpFetch(cfg.scriptUrl,25000);
     if(!data.ok) throw new Error(data.error||'Error en el script');
     const raw=data.rows||[];
 
     rows=raw.map(r=>({
-      fecha:     (r[C.fecha]||'').trim(),
-      dia:       (r[C.dia]||'').trim(),
-      operario:  (r[C.operario]||'').trim(),
-      telegramId:(r[C.telegramId]||'').trim(),
-      matricula: (r[C.matricula]||'').trim(),
-      area:      (r[C.area]||'').trim().toUpperCase(),
-      tarea:     (r[C.tarea]||'').trim(),
+      fecha:      (r[C.fecha]||'').trim(),
+      dia:        (r[C.dia]||'').trim(),
+      operario:   (r[C.operario]||'').trim(),
+      telegramId: (r[C.telegramId]||'').trim(),
+      matricula:  (r[C.matricula]||'').trim(),
+      area:       (r[C.area]||'').trim().toUpperCase(),
+      tarea:      (r[C.tarea]||'').trim(),
       horaEntrada:(r[C.horaEntrada]||'').trim(),
       horaSalida: (r[C.horaSalida]||'').trim(),
       duracion:   parseDur(r[C.duracion]),
@@ -372,23 +588,30 @@ async function loadData(){
     })).filter(r=>r.operario&&r.fecha);
 
     operarios=[...new Set(rows.map(r=>r.operario))].sort();
-    const sel=document.getElementById('he');
-    sel.innerHTML='<option value="">Todos</option>'+operarios.map(n=>`<option>${n}</option>`).join('');
+
+    // Poblar selects de operario
+    const opOpts='<option value="">👷 Todos los operarios</option>'+operarios.map(n=>`<option>${n}</option>`).join('');
+    document.getElementById('ft-operario').innerHTML=opOpts;
+    const heOpts='<option value="">Todos</option>'+operarios.map(n=>`<option>${n}</option>`).join('');
+    document.getElementById('he').innerHTML=heOpts;
 
     document.getElementById('tsLbl').textContent='Act. '+new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+    // Poblar operarios en Avisos
+    const opAvAvi=document.getElementById('tg-op-sel');
+    if(opAvAvi) opAvAvi.innerHTML='<option value="">— Operario —</option>'+
+      operarios.map(n=>`<option value="${n}">${n}</option>`).join('');
     renderActive();
   }catch(err){
     document.getElementById('egrid').innerHTML=
       `<div class="loading">❌ <strong>${err.message}</strong><br><br>
-       <button class="btn btn-ora" onclick="openCfg()">Configurar conexión</button></div>`;
+       <button class="btn btn-ora" onclick="loadData()">🔄 Reintentar</button>
+       &nbsp;
+       <button class="btn btn-ghost" style="background:var(--bg);color:var(--text)" onclick="openCfg()">⚙️ Configurar</button></div>`;
   }
 }
 
-// ══ HELPERS ════════════════════════════════════════
-function parseDur(v){
-  const n=parseInt(v);
-  return isNaN(n)?null:n;
-}
+// ══ HELPERS ══════════════════════════════════════════
+function parseDur(v){const n=parseInt(v);return isNaN(n)?null:n;}
 function parseDate(s){
   if(!s)return null;
   let m;
@@ -404,7 +627,14 @@ function sameDay(s,d2){
 }
 function inRange(s,from,to){
   const d=parseDate(s); if(!d)return false;
-  if(from&&d<new Date(from))return false;
+  if(from&&d<from)return false;
+  if(to){const t=new Date(to);t.setDate(t.getDate()+1);if(d>=t)return false;}
+  return true;
+}
+function inRangeDate(s,from,to){
+  // from/to are Date objects at midnight
+  const d=parseDate(s); if(!d)return false;
+  if(from&&d<from)return false;
   if(to){const t=new Date(to);t.setDate(t.getDate()+1);if(d>=t)return false;}
   return true;
 }
@@ -423,31 +653,73 @@ function flujoTag(f){
   if(f==='FSR')return'ffsr'; return'fof';
 }
 function areaClass(a){
-  if(a==='CHAPA')return'a-chapa';
-  if(a==='PINTURA')return'a-pintura';
+  if(a==='CHAPA')return'a-chapa'; if(a==='PINTURA')return'a-pintura';
   if(a==='MECÁNICA LIGERA'||a==='MECÁNICA')return'a-mec';
-  if(a==='DIAGNOSIS')return'a-diag';
-  if(a==='ENTRADA TALLER')return'a-entrada';
-  if(a==='SALIDA TALLER')return'a-salida';
-  if(a==='MERIENDA')return'a-merienda';
+  if(a==='DIAGNOSIS')return'a-diag'; if(a==='ENTRADA TALLER')return'a-entrada';
+  if(a==='SALIDA TALLER')return'a-salida'; if(a==='MERIENDA')return'a-merienda';
   if(a==='LIMPIEZA GENERAL'||a==='LIMPIEZA COCHES')return'a-limpieza';
   return'a-otras';
 }
 function areaColor(a){
-  if(a==='CHAPA')return'#3b82f6';
-  if(a==='PINTURA')return'#8b5cf6';
+  if(a==='CHAPA')return'#3b82f6'; if(a==='PINTURA')return'#8b5cf6';
   if(a==='MECÁNICA LIGERA'||a==='MECÁNICA')return'#10b981';
   if(a==='DIAGNOSIS')return'#f59e0b';
   if(a==='LIMPIEZA GENERAL'||a==='LIMPIEZA COCHES')return'#6ee7b7';
   return'#d1d5db';
 }
 function isMeriendaAnomala(r){
-  return r.area==='MERIENDA' && r.duracion!==null && r.duracion>60;
+  return r.area==='MERIENDA'&&r.duracion!==null&&r.duracion>60;
+}
+function prodColor(p){
+  return p>=80?'var(--green)':p>=55?'var(--yellow)':'var(--red)';
+}
+function prodKbadge(p){
+  if(p>=80) return`<span class="kbadge kb-g">✓ Alta</span>`;
+  if(p>=55) return`<span class="kbadge kb-y">~ Media</span>`;
+  return`<span class="kbadge kb-r">↓ Baja</span>`;
 }
 
-// ══ STATUS HOY ════════════════════════════════════
+// ══ PERIOD ═══════════════════════════════════════════
+function getPeriodDates(){
+  const now=new Date();
+  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  if(currentPeriod==='hoy') return{from:today,to:today};
+  if(currentPeriod==='semana'){
+    const dow=now.getDay();
+    const monday=new Date(today);
+    monday.setDate(today.getDate()-(dow===0?6:dow-1));
+    return{from:monday,to:today};
+  }
+  if(currentPeriod==='mes') return{from:new Date(now.getFullYear(),now.getMonth(),1),to:today};
+  if(currentPeriod==='año') return{from:new Date(now.getFullYear(),0,1),to:today};
+}
+
+function periodLabel(){
+  if(currentPeriod==='hoy') return'Estado actual';
+  if(currentPeriod==='semana') return'Esta semana';
+  if(currentPeriod==='mes') return'Este mes';
+  if(currentPeriod==='año') return'Este año';
+}
+
+function setPeriod(p,el){
+  currentPeriod=p;
+  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  // toggle vista button
+  const vt=document.getElementById('view-toggle');
+  vt.style.display=p==='hoy'?'none':'flex';
+  renderVista();
+}
+
+function setViewMode(m){
+  viewMode=m;
+  document.getElementById('vm-cards').className='vbtn'+(m==='cards'?' active':'');
+  document.getElementById('vm-table').className='vbtn'+(m==='table'?' active':'');
+  renderVista();
+}
+
+// ══ STATUS HOY ════════════════════════════════════════
 function getStatusHoy(empRows){
-  // Sort all rows by hora (entry or exit)
   const sorted=[...empRows].sort((a,b)=>{
     const ta=parseTime(a.horaEntrada||a.horaSalida)||0;
     const tb=parseTime(b.horaEntrada||b.horaSalida)||0;
@@ -458,40 +730,32 @@ function getStatusHoy(empRows){
   const a=last.area;
   if(a==='SALIDA TALLER')return{status:'salido',label:'Ha salido',bc:'br'};
   if(a==='MERIENDA'&&!isMeriendaAnomala(last))return{status:'pausa',label:'En pausa',bc:'by'};
-  // Last task area
   const lastTask=sorted.filter(r=>TASK_AREAS.includes(r.area)).slice(-1)[0];
-  const tareaActual=lastTask?`${lastTask.area}${lastTask.matricula&&lastTask.matricula!=='—'&&lastTask.matricula!=='PAUSA'?` · ${lastTask.matricula}`:''}${lastTask.tarea?` — ${lastTask.tarea}`:''}`:'';
+  const tareaActual=lastTask
+    ?`${lastTask.area}${lastTask.matricula&&lastTask.matricula!=='—'&&lastTask.matricula!=='PAUSA'?` · ${lastTask.matricula}`:''}${lastTask.tarea?` — ${lastTask.tarea}`:''}`
+    :'';
   return{status:'trabajando',label:'Trabajando',bc:'bg',tareaActual};
 }
 
-// Horas hoy: prefer DURACION from ENTRADA TALLER (bot-calculated, most reliable)
 function getHorasHoy(empRows){
-  const entradas=empRows.filter(r=>
-    r.area==='ENTRADA TALLER'&&r.duracion!==null&&r.duracion>0&&r.duracion<720
-  );
+  const entradas=empRows.filter(r=>r.area==='ENTRADA TALLER'&&r.duracion!==null&&r.duracion>0&&r.duracion<720);
   if(entradas.length>0)return Math.max(...entradas.map(e=>e.duracion));
-  // Fallback: time from first ENTRADA TALLER to now
   const primera=empRows.filter(r=>r.area==='ENTRADA TALLER'&&r.horaEntrada)
     .sort((a,b)=>(parseTime(a.horaEntrada)||0)-(parseTime(b.horaEntrada)||0))[0];
   if(primera){
     const now=new Date(); const n=now.getHours()*60+now.getMinutes();
-    const e=parseTime(primera.horaEntrada)||0;
-    return Math.max(0,n-e);
+    return Math.max(0,n-(parseTime(primera.horaEntrada)||0));
   }
   return null;
 }
 
-// Productividad: sum of task durations (excl ENTRADA/SALIDA/MERIENDA)
 function calcProd(empRows){
-  const tasks=empRows.filter(r=>
-    TASK_AREAS.includes(r.area)&&r.duracion!==null&&r.duracion>0&&r.duracion<480
-  );
+  const tasks=empRows.filter(r=>TASK_AREAS.includes(r.area)&&r.duracion!==null&&r.duracion>0&&r.duracion<480);
   const totalMins=tasks.reduce((s,r)=>s+r.duracion,0);
   const prodMins=tasks.filter(r=>PROD_AREAS.includes(r.area)).reduce((s,r)=>s+r.duracion,0);
   return{total:totalMins,prod:prodMins,ratio:totalMins>0?Math.round(prodMins/totalMins*100):0};
 }
 
-// Area distribution (minutes per area)
 function calcAreaDist(empRows){
   const dist={};
   empRows.filter(r=>TASK_AREAS.includes(r.area)&&r.duracion>0&&r.duracion<480).forEach(r=>{
@@ -500,35 +764,24 @@ function calcAreaDist(empRows){
   return dist;
 }
 
-// ══ RENDER ════════════════════════════════════════
-function switchTab(id,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('p-'+id).classList.add('active');
-  if(rows.length)renderTab(id);
-}
-function renderActive(){
-  const a=document.querySelector('.panel.active');
-  if(a)renderTab(a.id.replace('p-',''));
-}
-function renderTab(id){
-  if(id==='hoy')renderHoy();
-  else if(id==='empleados')renderEmpleados();
-  else if(id==='talleres')renderTalleres();
-  else if(id==='historial')renderHistorial();
+// ══ RENDER VISTA ═════════════════════════════════════
+function renderVista(){
+  document.getElementById('vista-title').textContent=periodLabel();
+  if(currentPeriod==='hoy') renderDia();
+  else renderPeriodo();
 }
 
-// ── HOY ──
-function renderHoy(){
-  const ft=document.getElementById('ft-flujo').value;
+// ── DÍA (HOY) ──
+function renderDia(){
+  const op=document.getElementById('ft-operario').value;
+  const taller=document.getElementById('ft-taller').value;
   const today=new Date();
   const todayRows=rows.filter(r=>sameDay(r.fecha,today));
 
-  // Group by operario
   const byEmp={};
   todayRows.forEach(r=>{
-    if(ft&&r.flujo!==ft)return;
+    if(op&&r.operario!==op)return;
+    if(taller&&r.flujo!==taller)return;
     if(!byEmp[r.operario])byEmp[r.operario]={nombre:r.operario,flujo:r.flujo,rows:[]};
     byEmp[r.operario].rows.push(r);
   });
@@ -545,10 +798,12 @@ function renderHoy(){
   const trab=emps.filter(e=>e.status==='trabajando').length;
   const paus=emps.filter(e=>e.status==='pausa').length;
   const sal =emps.filter(e=>e.status==='salido').length;
-  document.getElementById('n-t').textContent=trab;
-  document.getElementById('n-p').textContent=paus;
-  document.getElementById('n-s').textContent=sal;
-  document.getElementById('n-tot').textContent=emps.length;
+
+  document.getElementById('vstats').innerHTML=`
+    <div class="stat sg"><div class="slbl">Trabajando</div><div class="sval">${trab}</div></div>
+    <div class="stat sy"><div class="slbl">En pausa</div><div class="sval">${paus}</div></div>
+    <div class="stat sr"><div class="slbl">Han salido</div><div class="sval">${sal}</div></div>
+    <div class="stat sb"><div class="slbl">Total hoy</div><div class="sval">${emps.length}</div></div>`;
 
   if(!emps.length){
     document.getElementById('egrid').innerHTML='<div class="empty"><div class="empty-icon">🏖️</div>Sin fichajes hoy</div>';
@@ -559,7 +814,7 @@ function renderHoy(){
 
   document.getElementById('egrid').innerHTML=emps.map(e=>`
     <div class="ecard">
-      <span class="ftag ${flujoTag(e.flujo)}">${e.flujo||'—'}</span>
+      <span class="ftag ${flujoTag(e.flujo)}" title="${flujoName(e.flujo)}">${e.flujo||'—'}</span>
       <div class="ename">${e.nombre}</div>
       <div class="etarea">${e.tareaActual||'—'}</div>
       <span class="badge ${e.bc}">${e.label}</span>
@@ -568,28 +823,22 @@ function renderHoy(){
       ${e.prod.total>0?`
       <div class="eprod">
         <span style="color:var(--muted)">Productividad: </span>
-        <strong style="color:${e.prod.ratio>=70?'var(--green)':e.prod.ratio>=50?'var(--yellow)':'var(--red)'}">${e.prod.ratio}%</strong>
-        <div class="eprod-bar"><div class="eprod-fill" style="width:${e.prod.ratio}%"></div></div>
+        <strong style="color:${prodColor(e.prod.ratio)}">${e.prod.ratio}%</strong>
+        ${prodKbadge(e.prod.ratio)}
+        <div class="eprod-bar"><div class="eprod-fill" style="width:${e.prod.ratio}%;background:${prodColor(e.prod.ratio)}"></div></div>
       </div>`:''}
     </div>`).join('');
 }
 
-// ── EMPLEADOS ──
-function renderEmpleados(){
-  const desde=document.getElementById('e-d').value;
-  const hasta=document.getElementById('e-h').value;
-  const flujo=document.getElementById('e-f').value;
+// ── PERÍODO (SEMANA / MES / AÑO) ──
+function renderPeriodo(){
+  const op=document.getElementById('ft-operario').value;
+  const taller=document.getElementById('ft-taller').value;
+  const {from,to}=getPeriodDates();
 
-  const filtered=rows.filter(r=>
-    inRange(r.fecha,desde,hasta)&&(!flujo||r.flujo===flujo)
-  );
+  const filtered=rows.filter(r=>inRangeDate(r.fecha,from,to)&&(!op||r.operario===op)&&(!taller||r.flujo===taller));
 
-  if(!filtered.length){
-    document.getElementById('emp-wrap').innerHTML='<div class="empty"><div class="empty-icon">📅</div>Sin datos en el período</div>';
-    return;
-  }
-
-  // Group by operario + date to get daily hours
+  // Agrupar por empleado
   const byEmp={};
   filtered.forEach(r=>{
     if(!byEmp[r.operario])byEmp[r.operario]={nombre:r.operario,flujo:r.flujo,byDate:{}};
@@ -598,11 +847,8 @@ function renderEmpleados(){
   });
 
   const stats=Object.values(byEmp).map(e=>{
-    let totalHoras=0, dias=0;
-    Object.values(e.byDate).forEach(dr=>{
-      const h=getHorasHoy(dr);
-      if(h&&h>0){totalHoras+=h;dias++;}
-    });
+    let totalHoras=0,dias=0;
+    Object.values(e.byDate).forEach(dr=>{const h=getHorasHoy(dr);if(h&&h>0){totalHoras+=h;dias++;}});
     const allRows=Object.values(e.byDate).flat();
     const prod=calcProd(allRows);
     const dist=calcAreaDist(allRows);
@@ -611,26 +857,121 @@ function renderEmpleados(){
       media:dias>0?Math.round(totalHoras/dias):0};
   }).sort((a,b)=>b.totalHoras-a.totalHoras);
 
+  // KPI stats globales
+  const totalH=stats.reduce((s,e)=>s+e.totalHoras,0);
+  const avgProd=stats.filter(e=>e.prod.total>0).length>0
+    ?Math.round(stats.filter(e=>e.prod.total>0).reduce((s,e)=>s+e.prod.ratio,0)/stats.filter(e=>e.prod.total>0).length)
+    :0;
+  const totalDias=new Set(filtered.map(r=>r.fecha)).size;
+
+  document.getElementById('vstats').innerHTML=`
+    <div class="stat sb"><div class="slbl">Empleados activos</div><div class="sval">${stats.length}</div><div class="ssub">en el período</div></div>
+    <div class="stat sg"><div class="slbl">Horas totales</div><div class="sval" style="font-size:24px">${fmtMin(totalH)}</div><div class="ssub">suma del equipo</div></div>
+    <div class="stat sp"><div class="slbl">Productividad media</div><div class="sval" style="color:${prodColor(avgProd)}">${avgProd}%</div>${prodKbadge(avgProd)}</div>
+    <div class="stat sy"><div class="slbl">Días activos</div><div class="sval">${totalDias}</div><div class="ssub">en el período</div></div>`;
+
+  if(!stats.length){
+    document.getElementById('egrid').innerHTML='<div class="empty"><div class="empty-icon">📅</div>Sin datos en este período</div>';
+    return;
+  }
+
+  const maxH=Math.max(...stats.map(s=>s.totalHoras),1);
+
+  if(viewMode==='table'){
+    document.getElementById('egrid').innerHTML=`
+      <div style="overflow-x:auto;padding:0">
+        <table>
+          <thead><tr>
+            <th>Operario</th><th>Taller</th><th>Días</th>
+            <th>Horas totales</th><th>Media/día</th>
+            <th>Productividad</th><th>KPI</th><th>Área principal</th>
+          </tr></thead>
+          <tbody>${stats.map(s=>`<tr>
+            <td><strong>${s.nombre}</strong></td>
+            <td><span class="ftag ${flujoTag(s.flujo)}" style="position:static;display:inline-block" title="${flujoName(s.flujo)}">${s.flujo||'—'}</span></td>
+            <td>${s.dias}</td>
+            <td><strong>${fmtMin(s.totalHoras)}</strong></td>
+            <td>${fmtMin(s.media)}</td>
+            <td><strong style="color:${prodColor(s.prod.ratio)}">${s.prod.total>0?s.prod.ratio+'%':'—'}</strong></td>
+            <td>${s.prod.total>0?prodKbadge(s.prod.ratio):'—'}</td>
+            <td><span class="abadge ${areaClass(s.topArea)}">${s.topArea}</span></td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>`;
+  } else {
+    // Tarjetas de período
+    document.getElementById('egrid').innerHTML=stats.map(s=>`
+      <div class="ecard">
+        <span class="ftag ${flujoTag(s.flujo)}" title="${flujoName(s.flujo)}">${s.flujo||'—'}</span>
+        <div class="ename">${s.nombre}</div>
+        <div class="etarea">${flujoName(s.flujo)}</div>
+        <div class="ehours">${fmtMin(s.totalHoras)}</div>
+        <div class="emeta">${s.dias} días · ${fmtMin(s.media)}/día</div>
+        ${s.prod.total>0?`
+        <div class="eprod" style="margin-top:8px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="color:var(--muted);font-size:11px">Productividad</span>
+            <strong style="color:${prodColor(s.prod.ratio)}">${s.prod.ratio}%</strong>
+          </div>
+          ${prodKbadge(s.prod.ratio)}
+          <div class="eprod-bar" style="margin-top:5px">
+            <div class="eprod-fill" style="width:${s.prod.ratio}%;background:${prodColor(s.prod.ratio)}"></div>
+          </div>
+        </div>`:''}
+        <div style="margin-top:8px">
+          <span class="abadge ${areaClass(s.topArea)}" style="font-size:10px">${s.topArea}</span>
+        </div>
+        <div style="margin-top:8px">
+          <div class="barw"><div class="bar" style="width:${Math.round(s.totalHoras/maxH*120)}px;height:5px"></div></div>
+        </div>
+      </div>`).join('');
+  }
+}
+
+// ── EMPLEADOS ──
+function renderEmpleados(){
+  const desde=document.getElementById('e-d').value;
+  const hasta=document.getElementById('e-h').value;
+  const flujo=document.getElementById('e-f').value;
+  const filtered=rows.filter(r=>inRange(r.fecha,desde,hasta)&&(!flujo||r.flujo===flujo));
+
+  if(!filtered.length){
+    document.getElementById('emp-wrap').innerHTML='<div class="empty"><div class="empty-icon">📅</div>Sin datos en el período</div>';
+    return;
+  }
+  const byEmp={};
+  filtered.forEach(r=>{
+    if(!byEmp[r.operario])byEmp[r.operario]={nombre:r.operario,flujo:r.flujo,byDate:{}};
+    if(!byEmp[r.operario].byDate[r.fecha])byEmp[r.operario].byDate[r.fecha]=[];
+    byEmp[r.operario].byDate[r.fecha].push(r);
+  });
+  const stats=Object.values(byEmp).map(e=>{
+    let totalHoras=0,dias=0;
+    Object.values(e.byDate).forEach(dr=>{const h=getHorasHoy(dr);if(h&&h>0){totalHoras+=h;dias++;}});
+    const allRows=Object.values(e.byDate).flat();
+    const prod=calcProd(allRows);
+    const dist=calcAreaDist(allRows);
+    const topArea=Object.entries(dist).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
+    return{nombre:e.nombre,flujo:e.flujo,totalHoras,dias,prod,topArea,
+      media:dias>0?Math.round(totalHoras/dias):0};
+  }).sort((a,b)=>b.totalHoras-a.totalHoras);
   const maxH=Math.max(...stats.map(s=>s.totalHoras),1);
 
   document.getElementById('emp-wrap').innerHTML=`
     <table>
       <thead><tr>
-        <th>Operario</th><th>Flujo</th><th>Días</th>
+        <th>Operario</th><th>Taller</th><th>Días</th>
         <th>Horas totales</th><th>Media/día</th>
-        <th>Productividad</th><th>Área principal</th><th>Distribución</th>
+        <th>Productividad</th><th>KPI</th><th>Área principal</th><th>Distribución</th>
       </tr></thead>
       <tbody>${stats.map(s=>`<tr>
         <td><strong>${s.nombre}</strong></td>
-        <td><span class="ftag ${flujoTag(s.flujo)}" style="position:static;display:inline-block">${s.flujo||'—'}</span></td>
+        <td><span class="ftag ${flujoTag(s.flujo)}" style="position:static;display:inline-block">${flujoName(s.flujo)}</span></td>
         <td>${s.dias}</td>
         <td><strong>${fmtMin(s.totalHoras)}</strong></td>
         <td>${fmtMin(s.media)}</td>
-        <td>
-          <span style="font-weight:700;color:${s.prod.ratio>=70?'var(--green)':s.prod.ratio>=50?'var(--yellow)':'var(--red)'}">
-            ${s.prod.total>0?s.prod.ratio+'%':'—'}
-          </span>
-        </td>
+        <td><strong style="color:${prodColor(s.prod.ratio)}">${s.prod.total>0?s.prod.ratio+'%':'—'}</strong></td>
+        <td>${s.prod.total>0?prodKbadge(s.prod.ratio):'—'}</td>
         <td><span class="abadge ${areaClass(s.topArea)}">${s.topArea}</span></td>
         <td><div class="barw"><div class="bar" style="width:${Math.round(s.totalHoras/maxH*140)}px"></div></div></td>
       </tr>`).join('')}</tbody>
@@ -647,7 +988,6 @@ function renderTalleres(){
     document.getElementById('twrap').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🏭</div>Sin datos</div>';
     return;
   }
-
   const byFlujo={};
   filtered.forEach(r=>{
     const k=r.flujo||'?';
@@ -658,7 +998,6 @@ function renderTalleres(){
     if(!byFlujo[k].byEmpDate[dk])byFlujo[k].byEmpDate[dk]=[];
     byFlujo[k].byEmpDate[dk].push(r);
   });
-
   const cards=Object.values(byFlujo).map(t=>{
     let totalH=0;
     Object.values(t.byEmpDate).forEach(dr=>{const h=getHorasHoy(dr);if(h&&h>0)totalH+=h;});
@@ -669,13 +1008,12 @@ function renderTalleres(){
     const maxDist=topAreas[0]?.[1]||1;
     return{flujo:t.flujo,ops:t.ops.size,totalH,prod,dias,topAreas,maxDist};
   }).sort((a,b)=>b.totalH-a.totalH);
-
   const maxH=Math.max(...cards.map(c=>c.totalH),1);
 
   document.getElementById('twrap').innerHTML=cards.map(c=>`
     <div class="tcard">
       <div class="thead2">
-        <span class="ttitle">${c.flujo==='JM'?'Mecánica JM':c.flujo==='RM'?'Mecánica RM':c.flujo}</span>
+        <span class="ttitle">${flujoName(c.flujo)}</span>
         <span class="ftag ${flujoTag(c.flujo)}" style="position:static;display:inline-block">${c.ops} operarios</span>
       </div>
       <div class="tbody2">
@@ -686,9 +1024,10 @@ function renderTalleres(){
         </div>
         <div class="prodrow">
           <span style="color:var(--muted)">Productividad</span>
-          <span class="prodbig ${c.prod.ratio>=70?'prodg':'prodb'}">${c.prod.total>0?c.prod.ratio+'%':'—'}</span>
+          <span class="prodbig" style="color:${prodColor(c.prod.ratio)}">${c.prod.total>0?c.prod.ratio+'%':'—'}</span>
         </div>
-        <div class="barw" style="margin-bottom:12px">
+        ${c.prod.total>0?prodKbadge(c.prod.ratio):''}
+        <div class="barw" style="margin:10px 0">
           <div class="bar" style="width:${Math.round(c.totalH/maxH*100)}%;height:10px;border-radius:5px;"></div>
           <span style="font-size:11px;color:var(--muted)">${Math.round(c.totalH/maxH*100)}%</span>
         </div>
@@ -719,9 +1058,7 @@ function renderHistorial(){
   }).sort((a,b)=>{
     const da=parseDate(a.fecha),db=parseDate(b.fecha);
     if(da&&db&&da.getTime()!==db.getTime())return db.getTime()-da.getTime();
-    const ta=parseTime(a.horaEntrada||a.horaSalida)||0;
-    const tb=parseTime(b.horaEntrada||b.horaSalida)||0;
-    return tb-ta;
+    return(parseTime(b.horaEntrada||b.horaSalida)||0)-(parseTime(a.horaEntrada||a.horaSalida)||0);
   });
 
   document.getElementById('hbody').innerHTML=histData.length===0
@@ -730,9 +1067,9 @@ function renderHistorial(){
         <td>${r.fecha}</td>
         <td>${r.horaEntrada||r.horaSalida||'—'}</td>
         <td><strong>${r.operario}</strong></td>
-        <td><span class="ftag ${flujoTag(r.flujo)}" style="position:static;display:inline-block">${r.flujo}</span></td>
+        <td><span class="ftag ${flujoTag(r.flujo)}" style="position:static;display:inline-block" title="${flujoName(r.flujo)}">${r.flujo}</span></td>
         <td><span class="abadge ${areaClass(r.area)}">${r.area}</span>
-          ${isMeriendaAnomala(r)?`<span class="anomaly">⚠️ anomalía</span>`:''}
+          ${isMeriendaAnomala(r)?`<span class="anomaly">⚠️</span>`:''}
         </td>
         <td>${r.tarea||'—'}</td>
         <td>${r.matricula&&r.matricula!=='—'&&r.matricula!=='PAUSA'?r.matricula:'—'}</td>
@@ -742,8 +1079,8 @@ function renderHistorial(){
 
 function exportCSV(){
   if(!histData.length)return;
-  const h='Fecha,Operario,Flujo,Área,Tarea,Matrícula,Duración(min),Hora Entrada,Hora Salida';
-  const b=histData.map(r=>[r.fecha,r.operario,r.flujo,r.area,r.tarea,r.matricula,
+  const h='Fecha,Operario,Taller,Área,Tarea,Matrícula,Duración(min),Hora Entrada,Hora Salida';
+  const b=histData.map(r=>[r.fecha,r.operario,flujoName(r.flujo),r.area,r.tarea,r.matricula,
     r.duracion??'',r.horaEntrada,r.horaSalida]
     .map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`).join(','));
   const blob=new Blob([[h,...b].join('\n')],{type:'text/csv;charset=utf-8;'});
@@ -753,26 +1090,144 @@ function exportCSV(){
   a.click();
 }
 
-// ══ INIT ════════════════════════════════════════════
-function jsonpFetch(url) {
-  return new Promise((resolve, reject) => {
-    const cbName = '_mc' + Date.now();
-    const script = document.createElement('script');
-    const timer = setTimeout(() => {
-      cleanup(); reject(new Error('Timeout de conexión'));
-    }, 15000);
-    window[cbName] = function(data) { cleanup(); resolve(data); };
-    function cleanup() {
-      clearTimeout(timer);
-      delete window[cbName];
-      if (script.parentNode) document.head.removeChild(script);
-    }
-    script.onerror = () => { cleanup(); reject(new Error('Error de conexión')); };
-    script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cbName;
-    document.head.appendChild(script);
-  });
+// ══ TELEGRAM ═════════════════════════════════════════
+function tgChatId(dest){
+  if(dest==='JM')  return cfg.tgJM;
+  if(dest==='RM')  return cfg.tgRM;
+  if(dest==='FSR') return cfg.tgFSR;
+  return cfg.tgGroup;  // group o ID de operario directo
+}
+function tgDestLabel(dest){
+  if(dest==='JM')  return 'Joan Motorcar';
+  if(dest==='RM')  return 'Raúl Motorcar';
+  if(dest==='FSR') return 'FSR';
+  if(dest==='group') return 'Grupo general';
+  return dest; // operario por nombre
 }
 
+function setDest(el){
+  tgDest=el.dataset.dest;
+  document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  // limpiar selector de operario si se pulsa botón flujo
+  document.getElementById('tg-op-sel').value='';
+}
+
+function initAvisos(){
+  // Poblar operarios en el select del panel avisos
+  const sel=document.getElementById('tg-op-sel');
+  sel.innerHTML='<option value="">— Operario —</option>'+
+    operarios.map(n=>`<option value="${n}">${n}</option>`).join('');
+  sel.onchange=()=>{
+    if(sel.value){
+      tgDest=sel.value;
+      document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('active'));
+    }
+  };
+  // Mostrar aviso si falta token
+  document.getElementById('tg-nocfg').style.display=cfg.tgToken?'none':'block';
+  renderTgLog();
+}
+
+async function sendTelegram(text, chatId){
+  if(!cfg.tgToken) throw new Error('Token no configurado');
+  if(!chatId)      throw new Error('Chat ID no configurado para este destinatario');
+  const url=`https://api.telegram.org/bot${cfg.tgToken}/sendMessage`;
+  const res=await fetch(url,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({chat_id:chatId,text:text,parse_mode:'HTML'})
+  });
+  const data=await res.json();
+  if(!data.ok) throw new Error(data.description||'Error Telegram');
+  return data;
+}
+
+function addTgLog(msg,dest,ok,err){
+  tgLog.unshift({msg,dest,ok,err,ts:Date.now()});
+  if(tgLog.length>30) tgLog.pop();
+  try{localStorage.setItem('mc_tg_log',JSON.stringify(tgLog));}catch(e){}
+  renderTgLog();
+}
+
+function renderTgLog(){
+  const wrap=document.getElementById('tg-log-wrap');
+  if(!tgLog.length){wrap.innerHTML='';return;}
+  wrap.innerHTML=`<div class="tg-log">
+    <div class="tg-log-title">📜 Últimos envíos</div>
+    ${tgLog.map(e=>`<div class="tg-entry">
+      <span class="tg-icon">${e.ok?'✅':'❌'}</span>
+      <div class="tg-txt">
+        <div class="tg-dest-tag">${tgDestLabel(e.dest)}</div>
+        <div class="tg-msg-txt">${e.msg}</div>
+        ${e.err?`<div class="tg-time tg-err">${e.err}</div>`:''}
+        <div class="tg-time">${new Date(e.ts).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})}</div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+async function sendQuick(text){
+  if(!cfg.tgToken){openCfg();return;}
+  const chatId=tgChatId(tgDest);
+  // feedback visual
+  const btn=event.currentTarget;
+  const orig=btn.textContent;
+  btn.textContent='⏳…'; btn.disabled=true;
+  try{
+    await sendTelegram(text,chatId);
+    btn.textContent='✅ Enviado';
+    addTgLog(text,tgDest,true);
+  }catch(e){
+    btn.textContent='❌ Error';
+    addTgLog(text,tgDest,false,e.message);
+    alert('Error: '+e.message);
+  }
+  setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},2000);
+}
+
+async function sendFree(){
+  const msg=document.getElementById('tg-msg').value.trim();
+  if(!msg)return;
+  if(!cfg.tgToken){openCfg();return;}
+  const chatId=tgChatId(tgDest);
+  const btn=document.getElementById('tg-send-btn');
+  const st=document.getElementById('tg-status');
+  btn.disabled=true; st.textContent='Enviando…'; st.style.color=getComputedStyle(document.documentElement).getPropertyValue('--muted');
+  try{
+    await sendTelegram(msg,chatId);
+    st.textContent='✅ Enviado a '+tgDestLabel(tgDest); st.style.color='var(--green)';
+    document.getElementById('tg-msg').value='';
+    addTgLog(msg,tgDest,true);
+  }catch(e){
+    st.textContent='❌ '+e.message; st.style.color='var(--red)';
+    addTgLog(msg,tgDest,false,e.message);
+  }
+  btn.disabled=false;
+  setTimeout(()=>{st.textContent='';},5000);
+}
+
+// ══ TABS ═════════════════════════════════════════════
+function switchTab(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('p-'+id).classList.add('active');
+  if(rows.length)renderTab(id);
+}
+function renderActive(){
+  const a=document.querySelector('.panel.active');
+  if(a)renderTab(a.id.replace('p-',''));
+}
+function renderTab(id){
+  if(id==='hoy')renderVista();
+  else if(id==='empleados')renderEmpleados();
+  else if(id==='talleres')renderTalleres();
+  else if(id==='historial')renderHistorial();
+  else if(id==='avisos')initAvisos();
+}
+
+// ══ INIT ═════════════════════════════════════════════
 function init(){
   loadCfg();
   const today=new Date().toISOString().split('T')[0];
