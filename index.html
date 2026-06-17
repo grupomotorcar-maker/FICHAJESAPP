@@ -827,10 +827,13 @@ function renderDia(){
     <div class="ecard" onclick="openEmpDetail('${e.nombre}')" style="cursor:pointer">
       <span class="ftag ${flujoTag(e.flujo)}" title="${flujoName(e.flujo)}">${e.flujo||'—'}</span>
       <div class="ename">${e.nombre}</div>
-      <div class="etarea">${e.tareaActual||'—'}</div>
+      <div class="etarea">${e.status==='trabajando'?e.tareaActual||'—':''}</div>
       <span class="badge ${e.bc}">${e.label}</span>
       <div class="ehours">${fmtMin(e.horas)}</div>
-      <div class="emeta">Entrada: ${e.entrada}${e.horaSalida?' · Salida: <strong style="color:var(--red)">'+e.horaSalida+'</strong>':''}</div>
+      <div class="emeta">
+        Entrada: ${e.entrada}
+        ${e.horaSalida?`&nbsp;·&nbsp;<span style="color:var(--red);font-weight:700">Salida: ${e.horaSalida}</span>`:''}
+      </div>
       ${e.prod.total>0?`
       <div class="eprod">
         <span style="color:var(--muted)">Productividad: </span>
