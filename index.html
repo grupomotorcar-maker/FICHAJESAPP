@@ -407,6 +407,23 @@ tbody tr:hover td{background:#fafafa;}
   </div>
 </main>
 
+<!-- DETALLE EMPLEADO -->
+<div class="overlay hidden" id="det-ov">
+  <div class="modal" style="max-width:480px;max-height:85vh;overflow-y:auto;padding:0;">
+    <div style="padding:20px 22px 16px;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;">
+      <div>
+        <div id="det-nombre" style="font-size:18px;font-weight:900;color:var(--navy)"></div>
+        <div id="det-meta" style="font-size:12px;color:var(--muted);margin-top:2px"></div>
+      </div>
+      <button onclick="closeDet()" style="border:none;background:var(--bg);border-radius:8px;
+        padding:7px 11px;cursor:pointer;font-size:16px;color:var(--muted);">✕</button>
+    </div>
+    <div id="det-resumen" style="display:flex;gap:0;border-bottom:1px solid var(--border);"></div>
+    <div id="det-body" style="padding:16px;"></div>
+  </div>
+</div>
+
 <!-- CONFIG -->
 <div class="overlay hidden" id="cfg-ov">
   <div class="modal" style="max-width:520px;max-height:90vh;overflow-y:auto;">
@@ -696,11 +713,21 @@ function getStatusHoy(empRows){
     const tb=parseTime(b.horaEntrada||b.horaSalida)||0;
     return ta-tb;
   });
+  if(!sorted.length)return{status:'sin-datos',label:'Sin datos',bc:'br'};
+
+  // Si hay SALIDA TALLER en cualquier registro → ha salido (independiente del orden)
+  const salida=sorted.filter(r=>r.area==='SALIDA TALLER')
+    .sort((a,b)=>(parseTime(a.horaEntrada||a.horaSalida)||0)-(parseTime(b.horaEntrada||b.horaSalida)||0))
+    .slice(-1)[0];
+  if(salida){
+    const horaSal=salida.horaEntrada||salida.horaSalida||'';
+    return{status:'salido',label:'Salió a las '+horaSal,bc:'br',horaSalida:horaSal};
+  }
+
   const last=sorted[sorted.length-1];
-  if(!last)return{status:'sin-datos',label:'Sin datos',bc:'br'};
-  const a=last.area;
-  if(a==='SALIDA TALLER')return{status:'salido',label:'Ha salido',bc:'br'};
-  if(a==='MERIENDA'&&!isMeriendaAnomala(last))return{status:'pausa',label:'En pausa',bc:'by'};
+  if(last.area==='MERIENDA'&&!isMeriendaAnomala(last))
+    return{status:'pausa',label:'En pausa',bc:'by'};
+
   const lastTask=sorted.filter(r=>TASK_AREAS.includes(r.area)).slice(-1)[0];
   const tareaActual=lastTask
     ?`${lastTask.area}${lastTask.matricula&&lastTask.matricula!=='—'&&lastTask.matricula!=='PAUSA'?` · ${lastTask.matricula}`:''}${lastTask.tarea?` — ${lastTask.tarea}`:''}`
@@ -784,7 +811,7 @@ function renderDia(){
   emps.sort((a,b)=>(order[a.status]||0)-(order[b.status]||0));
 
   document.getElementById('egrid').innerHTML=emps.map(e=>`
-    <div class="ecard">
+    <div class="ecard" onclick="openEmpDetail('${e.nombre}')" style="cursor:pointer">
       <span class="ftag ${flujoTag(e.flujo)}" title="${flujoName(e.flujo)}">${e.flujo||'—'}</span>
       <div class="ename">${e.nombre}</div>
       <div class="etarea">${e.tareaActual||'—'}</div>
@@ -1177,6 +1204,66 @@ async function sendFree(){
   btn.disabled=false;
   setTimeout(()=>{st.textContent='';},5000);
 }
+
+// ══ DETALLE EMPLEADO ═════════════════════════════════
+function openEmpDetail(nombre){
+  const today=new Date();
+  const empRows=rows.filter(r=>r.operario===nombre&&sameDay(r.fecha,today))
+    .sort((a,b)=>(parseTime(a.horaEntrada||a.horaSalida)||0)-(parseTime(b.horaEntrada||b.horaSalida)||0));
+
+  if(!empRows.length) return;
+  const flujo=empRows[0].flujo;
+  const st=getStatusHoy(empRows);
+  const horas=getHorasHoy(empRows);
+  const prod=calcProd(empRows);
+
+  document.getElementById('det-nombre').textContent=nombre;
+  document.getElementById('det-meta').innerHTML=
+    `<span class="ftag ${flujoTag(flujo)}" style="position:static;display:inline-block">${flujoName(flujo)}</span>
+     &nbsp;<span class="badge ${st.bc}" style="display:inline-flex">${st.label}</span>`;
+
+  // Resumen compacto
+  document.getElementById('det-resumen').innerHTML=`
+    <div style="flex:1;padding:14px 16px;border-right:1px solid var(--border);">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px">Horas</div>
+      <div style="font-size:22px;font-weight:900;color:var(--navy)">${fmtMin(horas)}</div>
+    </div>
+    ${prod.total>0?`
+    <div style="flex:1;padding:14px 16px;border-right:1px solid var(--border);">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px">Productividad</div>
+      <div style="font-size:22px;font-weight:900;color:${prodColor(prod.ratio)}">${prod.ratio}%</div>
+    </div>`:''}
+    <div style="flex:1;padding:14px 16px;">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px">Registros</div>
+      <div style="font-size:22px;font-weight:900;color:var(--navy)">${empRows.length}</div>
+    </div>`;
+
+  // Timeline de fichajes
+  document.getElementById('det-body').innerHTML=`
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+      color:var(--muted);margin-bottom:12px;">Fichajes del día</div>
+    ${empRows.map((r,i)=>`
+      <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:${i<empRows.length-1?'12':'0'}px;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:10px;height:10px;border-radius:50%;background:${areaColor(r.area)};margin-top:3px;flex-shrink:0;"></div>
+          ${i<empRows.length-1?`<div style="width:2px;flex:1;min-height:20px;background:var(--border);margin-top:3px;"></div>`:''}
+        </div>
+        <div style="flex:1;padding-bottom:${i<empRows.length-1?'0':'0'}px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <span class="abadge ${areaClass(r.area)}">${r.area}</span>
+            <span style="font-size:11px;color:var(--muted);flex-shrink:0">${r.horaEntrada||r.horaSalida||'—'}</span>
+          </div>
+          ${r.tarea?`<div style="font-size:12px;color:var(--text);margin-top:3px;">${r.tarea}</div>`:''}
+          ${r.matricula&&r.matricula!=='—'&&r.matricula!=='PAUSA'?`<div style="font-size:11px;color:var(--muted);margin-top:2px;">🚗 ${r.matricula}</div>`:''}
+          ${r.duracion!==null?`<div style="font-size:11px;color:var(--muted);margin-top:2px;">⏱ ${fmtMin(r.duracion)}</div>`:''}
+          ${isMeriendaAnomala(r)?`<div style="font-size:10px;color:var(--red);margin-top:2px;">⚠️ Pausa larga</div>`:''}
+        </div>
+      </div>`).join('')}`;
+
+  document.getElementById('det-ov').classList.remove('hidden');
+  document.getElementById('det-ov').onclick=e=>{if(e.target===e.currentTarget)closeDet();};
+}
+function closeDet(){document.getElementById('det-ov').classList.add('hidden');}
 
 // ══ TABS ═════════════════════════════════════════════
 function goBack(){
